@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Fitness</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_home">TRANG CHỦ</string>
+    <string name="title_exercise">BÀI TẬP</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="calories">%skcal</string>
+    <string name="timer">%s</string>
+    <string name="plan">KẾ HOẠCH TẬP LUYỆN</string>
+    <string name="count_exercise">%s Bài Tập</string>
+    <string name="sets">%s sets</string>
+    <string name="count">Đã chọn: %s</string>
+    <string name="meal_category">DANH SÁCH CÁC THỰC PHẨM, LƯỢNG CALORIES</string>
+    <string name="sport_category">THỰC PHẨM DINH DƯỠNG THỂ THAO</string>
+    <string name="my_meal_plan">CHẾ ĐỘ ĂN UỐNG CỦA TÔI</string>
+    <string name="protein">Protein: %s</string>
+    <string name="count_food">%s food</string>
+    <string name="count_foods">%s foods</string>
+</resources>

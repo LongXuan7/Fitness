@@ -1,0 +1,11 @@
+package com.example.fitness.data.model
+
+import java.io.Serializable
+
+data class Category(
+    val id: Int? = null,
+    val name: String? = null,
+    val url: String? = null,
+    val count_temp: String = "0"
+) : Serializable
+

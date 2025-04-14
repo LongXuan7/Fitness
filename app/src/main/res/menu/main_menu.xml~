@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/home"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_exercise"
+        android:icon="@drawable/exercise"
+        android:title="Excercise"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_exercise_plan"
+        android:icon="@drawable/excercise_plan"
+        android:title="Exercise Plan"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_food"
+        android:icon="@drawable/meal_plan"
+        android:title="Food"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/account"
+        android:title="Profile"
+        app:showAsAction="always"/>
+</menu>

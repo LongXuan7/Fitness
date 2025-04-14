@@ -1,0 +1,33 @@
+package com.example.fitness.ui.exercise_detail
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import com.example.fitness.data.model.Tag
+import com.example.fitness.databinding.LayoutItemTagBinding
+import com.example.fitness.ui.plan.WeekAdapter
+import com.example.fitness.util.base.BaseAdapter
+
+class TagAdapter : BaseAdapter<Tag, LayoutItemTagBinding>(DIFF_TAG) {
+
+    companion object {
+        val DIFF_TAG = object : DiffUtil.ItemCallback<Tag>() {
+            override fun areItemsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+                return oldItem.name == newItem.name
+            }
+
+            override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+    override fun createBinding(parent: ViewGroup): LayoutItemTagBinding {
+        val inflater = LayoutInflater.from(parent.context)
+        return LayoutItemTagBinding.inflate(inflater, parent, false)
+    }
+
+    override fun bind(binding: LayoutItemTagBinding, item: Tag, position: Int) {
+        binding.textView5.text = item.name
+    }
+}

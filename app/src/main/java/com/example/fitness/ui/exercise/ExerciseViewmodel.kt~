@@ -1,0 +1,7 @@
+package com.example.fitness.ui.exercise
+
+import com.example.fitness.util.base.BaseViewModel
+
+class ExerciseViewmodel : BaseViewModel() {
+    
+}
