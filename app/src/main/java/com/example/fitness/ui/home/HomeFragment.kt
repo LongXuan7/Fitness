@@ -42,6 +42,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         binding.btnAchievement.setOnClickListener {
             startActivity(Intent(requireContext(), AchievementActivity::class.java))
         }
+        binding.imageView.setOnClickListener {
+            listener?.onNavigateToMenu(0)
+        }
     }
 
     override fun onDetach() {

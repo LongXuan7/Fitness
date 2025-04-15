@@ -13,11 +13,12 @@ import com.example.fitness.ui.food.FoodFragment
 import com.example.fitness.ui.home.HomeFragment
 import com.example.fitness.ui.plan.PlanFragment
 import com.example.fitness.ui.profile.ProfileFragment
+import com.example.fitness.ui.reminder.ReminderFragment
 import com.example.fitness.util.OnMainFragmentListener
 
 class MainActivity : AppCompatActivity(), OnMainFragmentListener {
 
-    private var binding : ActivityMainBinding? = null
+    private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,8 @@ class MainActivity : AppCompatActivity(), OnMainFragmentListener {
         checkSwap(intent.getBooleanExtra("FoodFragment", false))
     }
 
-    private fun checkSwap(isCheck : Boolean) {
-       if (isCheck)  binding?.bottomNavigationView?.selectedItemId = R.id.menu_food
+    private fun checkSwap(isCheck: Boolean) {
+        if (isCheck) binding?.bottomNavigationView?.selectedItemId = R.id.menu_food
     }
 
     private fun setUpBottomNavigation() {
@@ -45,22 +46,27 @@ class MainActivity : AppCompatActivity(), OnMainFragmentListener {
                     transitionToFragment(HomeFragment())
                     true
                 }
+
                 R.id.menu_exercise -> {
                     transitionToFragment(ExerciseFragment())
                     true
                 }
+
                 R.id.menu_exercise_plan -> {
                     transitionToFragment(PlanFragment())
                     true
                 }
+
                 R.id.menu_food -> {
                     transitionToFragment(FoodFragment())
                     true
                 }
+
                 R.id.menu_profile -> {
                     transitionToFragment(ProfileFragment())
                     true
                 }
+
                 else -> false
             }
         }
@@ -79,6 +85,10 @@ class MainActivity : AppCompatActivity(), OnMainFragmentListener {
     }
 
     override fun onNavigateToMenu(menuId: Int) {
-        binding?.bottomNavigationView?.selectedItemId = menuId
+        if (menuId == 0) {
+            transitionToFragment(ReminderFragment())
+        } else {
+            binding?.bottomNavigationView?.selectedItemId = menuId
+        }
     }
 }

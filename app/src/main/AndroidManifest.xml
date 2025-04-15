@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.add_reminder.AddReminderActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.achievement_detail.AchievementDetailActivity"
             android:exported="false" />
         <activity

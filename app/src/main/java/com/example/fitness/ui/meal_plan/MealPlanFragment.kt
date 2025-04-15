@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.Navigation.findNavController
 import com.example.fitness.R
 import com.example.fitness.data.model.Meal
 import com.example.fitness.data.model.MealItem
