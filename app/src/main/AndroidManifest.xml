@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.achievement_detail.AchievementDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.achievement.AchievementActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.sport_detail.SportDetailActivity"
             android:exported="false" />
         <activity

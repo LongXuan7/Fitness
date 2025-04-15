@@ -1,10 +1,12 @@
 package com.example.fitness.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.fitness.R
 import com.example.fitness.databinding.FragmentHomeBinding
+import com.example.fitness.ui.achievement.AchievementActivity
 import com.example.fitness.util.OnMainFragmentListener
 import com.example.fitness.util.base.BaseFragment
 
@@ -38,7 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             listener?.onNavigateToMenu(R.id.menu_exercise_plan)
         }
         binding.btnAchievement.setOnClickListener {
-
+            startActivity(Intent(requireContext(), AchievementActivity::class.java))
         }
     }
 

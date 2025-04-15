@@ -1,9 +1,13 @@
 package com.example.fitness.ui.meal_plan
 
+import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation.findNavController
 import com.example.fitness.R
 import com.example.fitness.data.model.Meal
 import com.example.fitness.data.model.MealItem
@@ -11,6 +15,7 @@ import com.example.fitness.data.model.MyNutrition
 import com.example.fitness.data.model.Sport
 import com.example.fitness.data.model.Week
 import com.example.fitness.databinding.FragmentMealPlanBinding
+import com.example.fitness.ui.nutrition.NutritionFragment
 import com.example.fitness.util.base.BaseFragment
 import com.example.fitness.util.ext.setAdapterLinearHorizontal
 import com.example.fitness.util.ext.setAdapterLinearVertical
@@ -20,8 +25,8 @@ import java.util.UUID
 
 class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel>() {
 
-    private val adapterDayOfWeek =
-        WeekMealPlanAdapter(::onItemClickWeek, getTodayIndex(getCurrentWeekDays()))
+    private var tabSelectedListener: OnTabSelectedListener? = null
+    private val adapterDayOfWeek = WeekMealPlanAdapter(::onItemClickWeek, getTodayIndex(getCurrentWeekDays()))
     private var adapter: NutritionMealPlanAdapter? = null
     private var currentCalendar: Calendar = Calendar.getInstance()
     private var mNutrition: List<MyNutrition> = listOf()
@@ -30,6 +35,20 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
     private var mDinnerList: List<MealItem> = listOf()
     private var mSports: List<Sport> = listOf()
     private var mMeals: List<Meal> = listOf()
+    private var mealPlan = "breakfast"
+    private var mDate = LocalDate.now().toString()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnTabSelectedListener) {
+            tabSelectedListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        tabSelectedListener = null
+    }
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -168,6 +187,7 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
         val month = binding.tvMonth.text.toString().replace("Tháng ", "").toInt()
         val year = binding.tvYear.text.toString().toInt()
         val selectedDate = LocalDate.of(year, month, date)
+        mDate = selectedDate.toString()
         viewModel.getMealPlans(selectedDate.toString())
     }
 
@@ -194,7 +214,6 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
             mMeals = it
             trySetupAdapter(compareList(mBreakFastList, mNutrition))
         }
-
     }
 
     private fun compareList(
@@ -209,16 +228,33 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
         binding.btnNextTime.setOnClickListener { nextWeek() }
         binding.btnBackTime.setOnClickListener { backWeek() }
         binding.tvBreakfast.setOnClickListener {
+            mealPlan = "breakfast"
             setTabSelected(0)
             trySetupAdapter(compareList(mBreakFastList, mNutrition))
         }
         binding.tvLunch.setOnClickListener {
+            mealPlan = "lunch"
             setTabSelected(1)
             trySetupAdapter(compareList(mLunchList, mNutrition))
         }
         binding.tvDinner.setOnClickListener {
+            mealPlan = "dinner"
             setTabSelected(2)
             trySetupAdapter(compareList(mDinnerList, mNutrition))
+        }
+        binding.btnAddFood.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("mealPlan", mealPlan)
+                putString("date", mDate)
+            }
+            val nutritionFragment = NutritionFragment()
+            nutritionFragment.arguments = bundle
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout_meal_plan, nutritionFragment)
+                .commit()
+
+            tabSelectedListener?.onTabSelected(true)
         }
     }
 
@@ -278,6 +314,10 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
     }
 
     private fun onItemClickDelete(myNutrition: MyNutrition) {
+//        viewModel.deleteNutrition(myNutrition)
     }
+}
 
+interface OnTabSelectedListener {
+    fun onTabSelected(isNutritionSelected: Boolean)
 }

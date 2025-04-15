@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.fitness.R
-import com.example.fitness.data.model.Tag
 import com.example.fitness.data.model.Week
 import com.example.fitness.databinding.LayoutItemCalendarBinding
-import com.example.fitness.databinding.LayoutItemTagBinding
 import com.example.fitness.util.base.BaseAdapter
 
 class WeekAdapter(

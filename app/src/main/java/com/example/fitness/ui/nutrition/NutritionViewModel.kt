@@ -2,15 +2,19 @@ package com.example.fitness.ui.nutrition
 
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Meal
+import com.example.fitness.data.model.MealPlan
 import com.example.fitness.data.model.MyNutrition
 import com.example.fitness.data.model.Sport
+import com.example.fitness.data.repository.MealPlanRepository
 import com.example.fitness.data.repository.MealRepository
 import com.example.fitness.data.repository.MyNutritionRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
+import java.time.LocalDate
 
 class NutritionViewModel : BaseViewModel() {
     private val repositoryNutrition = MyNutritionRepository("my_nutritions")
+    private val mealPlanRepository = MealPlanRepository("meal_plans")
     private val repositoryMeal = MealRepository("meals")
     private val repositorySport= SportRepository("sports")
 
@@ -77,4 +81,34 @@ class NutritionViewModel : BaseViewModel() {
         )
     }
 
+    private val _addMealPlan = MutableLiveData(false)
+    val addMealPlan: MutableLiveData<Boolean>
+        get() = _addMealPlan
+
+    fun addMealPlan(mealPlan: MealPlan, date: String) {
+        launchWithErrorHandling(
+            block = {
+                mealPlanRepository.add(
+                    date,
+                    mealPlan,
+                    onComplete = {_addMealPlan.postValue(true)}
+                )
+            }
+        )
+    }
+
+    private val _deleteNutrition = MutableLiveData(false)
+    val deleteNutrition: MutableLiveData<Boolean>
+        get() = _deleteNutrition
+
+    fun deleteNutrition(nutrition: MyNutrition) {
+        launchWithErrorHandling(
+            block = {
+                repositoryNutrition.delete(
+                    nutrition.id.toString(),
+                    onComplete = {_deleteNutrition.postValue(true)}
+                )
+            }
+        )
+    }
 }

@@ -78,6 +78,16 @@
         app:layout_constraintTop_toTopOf="@+id/tv_protein_nutrition"
         app:srcCompat="@drawable/delete1" />
 
+    <ImageView
+        android:id="@+id/btn_add"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_delete_nutrition"
+        app:layout_constraintEnd_toStartOf="@+id/tv_delete_nutrition"
+        app:layout_constraintTop_toTopOf="@+id/tv_delete_nutrition"
+        app:srcCompat="@drawable/add_food" />
+
     <View
         android:id="@+id/view12"
         android:layout_width="wrap_content"

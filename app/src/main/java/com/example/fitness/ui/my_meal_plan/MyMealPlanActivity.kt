@@ -1,20 +1,20 @@
 package com.example.fitness.ui.my_meal_plan
 
-import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.fitness.R
 import com.example.fitness.databinding.ActivityMyMealPlanBinding
-import com.example.fitness.ui.food.FoodFragment
 import com.example.fitness.ui.main.MainActivity
 import com.example.fitness.ui.meal_plan.MealPlanFragment
+import com.example.fitness.ui.meal_plan.MealPlanViewModel
+import com.example.fitness.ui.meal_plan.OnTabSelectedListener
 import com.example.fitness.ui.nutrition.NutritionFragment
-import com.example.fitness.util.OnMainFragmentListener
 import com.example.fitness.util.base.BaseActivity
 
-class MyMealPlanActivity : BaseActivity<ActivityMyMealPlanBinding, MyMealPlanViewModel>() {
+class MyMealPlanActivity : BaseActivity<ActivityMyMealPlanBinding, MealPlanViewModel>(), OnTabSelectedListener {
 
     override val bindingInflater: (LayoutInflater) -> ActivityMyMealPlanBinding
         get() = ActivityMyMealPlanBinding::inflate
@@ -68,7 +68,6 @@ class MyMealPlanActivity : BaseActivity<ActivityMyMealPlanBinding, MyMealPlanVie
 
 
     override fun setupObservers() {
-
     }
 
     private fun transitionToFragment(fragment: Fragment) {
@@ -76,5 +75,9 @@ class MyMealPlanActivity : BaseActivity<ActivityMyMealPlanBinding, MyMealPlanVie
             .replace(R.id.frameLayout_meal_plan, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onTabSelected(isNutritionSelected: Boolean) {
+        setTabSelected(true)
     }
 }
