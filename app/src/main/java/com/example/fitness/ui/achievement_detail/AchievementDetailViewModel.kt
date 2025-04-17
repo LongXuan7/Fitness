@@ -1,5 +1,6 @@
 package com.example.fitness.ui.achievement_detail
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Category
@@ -10,11 +11,12 @@ import com.example.fitness.data.repository.ExerciseRepository
 import com.example.fitness.data.repository.WorkoutPlanRepository
 import com.example.fitness.util.base.BaseViewModel
 
-class AchievementDetailViewModel : BaseViewModel() {
+class AchievementDetailViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
 
-    private val workoutPlanRepository = WorkoutPlanRepository("workout_plan")
-    private val repository = CategoryRepository("categories")
-    private val exerciseRepository = ExerciseRepository("exercise")
+    private val workoutPlanRepository = WorkoutPlanRepository(if (currentLanguage == "en") "workout_plan_en" else "workout_plan")
+    private val repository = CategoryRepository(if (currentLanguage == "en") "categores_en" else "categories")
+    private val exerciseRepository = ExerciseRepository(if (currentLanguage == "en") "exercise_en" else "exercise")
 
     init {
         fetchCategories()

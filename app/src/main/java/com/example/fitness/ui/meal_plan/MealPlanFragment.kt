@@ -17,6 +17,7 @@ import com.example.fitness.ui.nutrition.NutritionFragment
 import com.example.fitness.util.base.BaseFragment
 import com.example.fitness.util.ext.setAdapterLinearHorizontal
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.UUID
@@ -35,6 +36,8 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
     private var mMeals: List<Meal> = listOf()
     private var mealPlan = "breakfast"
     private var mDate = LocalDate.now().toString()
+    override val viewModel: MealPlanViewModel
+            by viewModel()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -1,5 +1,6 @@
 package com.example.fitness.ui.meal
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Meal
@@ -7,15 +8,16 @@ import com.example.fitness.data.model.MealCategory
 import com.example.fitness.data.repository.MealCategoryRepository
 import com.example.fitness.data.repository.MealRepository
 import com.example.fitness.util.base.BaseViewModel
+import java.util.Locale
 
-class MealViewModel : BaseViewModel() {
-    private val mealCategoryRepository = MealCategoryRepository("meal_categories")
-    private val mealRepository = MealRepository("meals")
+class MealViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
+    private val mealCategoryRepository = MealCategoryRepository(if (currentLanguage == "en") "meal_categories_en" else "meal_categories")
+    private val mealRepository = MealRepository(if (currentLanguage == "en") "meals_en" else "meals")
 
     init {
         getMealCategories()
     }
-
 
     private val _mealCategories = MutableLiveData<List<MealCategory>>()
     val mealCategories: LiveData<List<MealCategory>>

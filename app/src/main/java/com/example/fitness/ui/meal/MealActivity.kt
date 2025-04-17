@@ -11,12 +11,15 @@ import com.example.fitness.databinding.ActivityMealBinding
 import com.example.fitness.ui.meal_detail.MealDetailActivity
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MealActivity : BaseActivity<ActivityMealBinding, MealViewModel>() {
 
     private val adapterMealCategory = MealCategoryAdapter(::onItemClickMealCategory)
     private val adapterMeal = MealAdapter(::onItemClickMeal)
     private var isBack = false
+    override val viewModel: MealViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityMealBinding
         get() = ActivityMealBinding::inflate

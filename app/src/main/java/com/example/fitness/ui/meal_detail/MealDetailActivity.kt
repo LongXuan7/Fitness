@@ -7,11 +7,14 @@ import com.example.fitness.data.model.MyNutrition
 import com.example.fitness.databinding.ActivityMealDetailBinding
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.loadImage
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.UUID
 
 class MealDetailActivity : BaseActivity<ActivityMealDetailBinding, MealDetailViewModel>() {
 
     private var meal : Meal? = null
+    override val viewModel: MealDetailViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityMealDetailBinding
         get() = ActivityMealDetailBinding::inflate

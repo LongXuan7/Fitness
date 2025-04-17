@@ -19,6 +19,7 @@ import com.example.fitness.util.FormatTime.formatTime
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerciseViewModel>() {
 
@@ -28,6 +29,8 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
     private var timeLeftInSeconds = 0
     private var exercise: Exercise? = null
     private var workoutPlan: WorkoutPlan? = null
+    override val viewModel: ModeExerciseViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityModeExerciseBinding
         get() = ActivityModeExerciseBinding::inflate

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="LỜI NHẮC TẬP LUYỆN"
+            android:text="@string/l_i_nh_c_t_p_luy_n"
             android:textSize="20sp"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/black"

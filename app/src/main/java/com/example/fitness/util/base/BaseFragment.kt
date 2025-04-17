@@ -10,22 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.example.fitness.util.dialogManager.DialogManager
 import com.example.fitness.util.dialogManager.DialogManagerImpl
-import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getViewModelClass(): Class<VM> {
-        val superclass = javaClass.genericSuperclass as ParameterizedType
-        return superclass.actualTypeArguments[1] as Class<VM>
-    }
-
-    protected val viewModel: VM by lazy {
-        ViewModelProvider(this)[getViewModelClass()]
-    }
+    protected abstract val viewModel: VM
 
     private var dialogManager: DialogManager? = null
 

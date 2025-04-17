@@ -9,10 +9,13 @@ import com.example.fitness.databinding.FragmentReminderBinding
 import com.example.fitness.ui.add_reminder.AddReminderActivity
 import com.example.fitness.util.base.BaseFragment
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReminderFragment : BaseFragment<FragmentReminderBinding, ReminderViewModel>() {
 
     private val adapterReminder = ReminderAdapter(::onClickDelete, ::onClickUpdate)
+    override val viewModel: ReminderViewModel
+            by viewModel()
 
     override fun inflateBinding(
         inflater: LayoutInflater,

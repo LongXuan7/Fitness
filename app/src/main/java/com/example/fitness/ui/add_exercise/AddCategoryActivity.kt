@@ -21,6 +21,7 @@ import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.util.UUID
 
@@ -28,11 +29,18 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
 
     private val adapterCategory = AddCategoryAdapter(::onItemCategoryClick)
     private var mCategories = mutableListOf<Category>()
+    override val viewModel: AddExerciseViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAddCategoryBinding
         get() = ActivityAddCategoryBinding::inflate
 
     override fun setupViews() {
+        val sharedPref = getSharedPreferences("settings", MODE_PRIVATE)
+        val language = sharedPref.getString("language", "vi") ?: "vi"
+        val country = sharedPref.getString("country", "vi") ?: "vi"
+
+        Log.d("lngnx", "setupViews: $language")
         setUpRecyclerView()
     }
 
@@ -86,7 +94,6 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
         mCategories.forEach {
             viewModel.updateAllCountTemp(it.id)
         }
-        Log.d("longnx", "resetAllCountTemp: $mCategories")
     }
 
     private fun resetAllSetTemp() {
@@ -107,7 +114,7 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
                 id = UUID.randomUUID().toString(),
                 time = LocalDate.now().toString(),
                 exercise_id = it.id,
-                user_id = 1,
+                user_id = "1",
                 set = it.set_temp,
                 completedSet = 0,
                 progress = 0

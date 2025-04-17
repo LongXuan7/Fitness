@@ -10,6 +10,7 @@ import com.example.fitness.ui.sport.ImpactAdapter
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.loadImage
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.UUID
 
 class SportDetailActivity : BaseActivity<ActivitySportDetailBinding, SportDetailViewModel>() {
@@ -17,6 +18,8 @@ class SportDetailActivity : BaseActivity<ActivitySportDetailBinding, SportDetail
     private var sport: Sport? = null
     private val adapterBenefit = BenefitAdapter()
     private val adapterImpact = ImpactAdapter()
+    override val viewModel: SportDetailViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivitySportDetailBinding
         get() = ActivitySportDetailBinding::inflate

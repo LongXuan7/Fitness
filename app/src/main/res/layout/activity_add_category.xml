@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="THÊM BÀI TẬP"
+            android:text="@string/th_m_b_i_t_p"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
             android:background="@drawable/bg_add_category_cancel"
             android:gravity="center"
             android:paddingVertical="5dp"
-            android:text="Hủy bỏ"
+            android:text="@string/h_y_b"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -119,7 +119,7 @@
             android:background="@drawable/bg_add_category_ok"
             android:gravity="center"
             android:paddingVertical="5dp"
-            android:text="Thêm"
+            android:text="@string/th_m"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>

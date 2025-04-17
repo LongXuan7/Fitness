@@ -163,7 +163,7 @@
                 android:layout_width="140dp"
                 android:layout_height="34dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Hướng dẫn"
+                android:text="@string/h_ng_d_n"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"

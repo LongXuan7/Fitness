@@ -1,5 +1,6 @@
 package com.example.fitness.ui.sport
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Sport
@@ -7,10 +8,12 @@ import com.example.fitness.data.model.SportCategory
 import com.example.fitness.data.repository.SportCategoryRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
+import java.util.Locale
 
-class SportViewModel : BaseViewModel() {
-    private val sportCategoryRepository = SportCategoryRepository("sport_categories")
-    private val sportRepository = SportRepository("sports")
+class SportViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
+    private val sportCategoryRepository = SportCategoryRepository(if (currentLanguage == "en") "sport_categories_en" else "sport_categories")
+    private val sportRepository = SportRepository(if (currentLanguage == "en") "sports_en" else "sports")
 
     init {
         getSportCategories()

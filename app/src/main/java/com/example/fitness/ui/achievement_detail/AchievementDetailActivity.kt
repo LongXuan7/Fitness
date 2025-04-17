@@ -10,6 +10,7 @@ import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AchievementDetailActivity : BaseActivity<ActivityAchievementDetailBinding, AchievementDetailViewModel>() {
 
@@ -17,6 +18,7 @@ class AchievementDetailActivity : BaseActivity<ActivityAchievementDetailBinding,
     private var workoutPlans: List<WorkoutPlan> = listOf()
     private var mCategories: List<Category> = listOf()
     private var mExercises: List<Exercise> = listOf()
+    override val viewModel: AchievementDetailViewModel by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAchievementDetailBinding
         get() = ActivityAchievementDetailBinding::inflate

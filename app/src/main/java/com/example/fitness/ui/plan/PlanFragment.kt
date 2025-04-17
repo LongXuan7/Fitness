@@ -19,6 +19,7 @@ import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterGrid
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.UUID
@@ -31,6 +32,8 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
     private var mCategories: List<Category> = listOf()
     private var mExercises: List<Exercise> = listOf()
     private var currentCalendar: Calendar = Calendar.getInstance()
+    override val viewModel: PlanViewModel
+            by viewModel()
 
     override fun inflateBinding(
         inflater: LayoutInflater,

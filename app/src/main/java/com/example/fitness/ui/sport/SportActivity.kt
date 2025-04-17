@@ -12,6 +12,7 @@ import com.example.fitness.ui.meal_detail.MealDetailActivity
 import com.example.fitness.ui.sport_detail.SportDetailActivity
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SportActivity : BaseActivity<ActivitySportBinding, SportViewModel>() {
 
@@ -19,6 +20,8 @@ class SportActivity : BaseActivity<ActivitySportBinding, SportViewModel>() {
     private val adapterSport = SportAdapter(::onItemClickSport)
 
     private var isBack = false
+    override val viewModel: SportViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivitySportBinding
         get() = ActivitySportBinding::inflate

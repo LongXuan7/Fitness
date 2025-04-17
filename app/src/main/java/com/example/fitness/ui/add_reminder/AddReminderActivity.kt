@@ -30,6 +30,7 @@ import com.example.fitness.util.broadcast.ReminderReceiver
 import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterLinearHorizontal
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
@@ -42,6 +43,8 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
     private var currentCalendar: Calendar = Calendar.getInstance()
     private var selectedDate = LocalDate.now()
     private var mReminder: Reminder? = null
+    override val viewModel: AddReminderViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAddReminderBinding
         get() = ActivityAddReminderBinding::inflate

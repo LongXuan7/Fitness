@@ -389,7 +389,7 @@
                 android:background="@drawable/bg_add_meal_plan"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="10dp"
-                android:text="Thêm Vào Chế Độ Dinh Dưỡng"
+                android:text="@string/th_m_v_o_ch_dinh_d_ng"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"

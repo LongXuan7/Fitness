@@ -13,11 +13,14 @@ import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterGrid
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExerciseDetailActivity : BaseActivity<ActivityExerciseDetailBinding, ExerciseDetailViewModel>() {
 
     private val adapterTag = TagAdapter()
     private val adapterGuideStep = GuideStepAdapter()
+    override val viewModel: ExerciseDetailViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityExerciseDetailBinding
         get() = { inflater ->

@@ -1,5 +1,6 @@
 package com.example.fitness.ui.plan
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,11 +11,16 @@ import com.example.fitness.data.repository.CategoryRepository
 import com.example.fitness.data.repository.ExerciseRepository
 import com.example.fitness.data.repository.WorkoutPlanRepository
 import com.example.fitness.util.base.BaseViewModel
+import java.util.Locale
 
-class PlanViewModel : BaseViewModel() {
+class PlanViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
     private val workoutPlanRepository = WorkoutPlanRepository("workout_plan")
+    private val workoutPlanRepositoryEn = WorkoutPlanRepository("workout_plan_en")
     private val repository = CategoryRepository("categories")
+    private val repositoryEn = CategoryRepository("categores_en")
     private val exerciseRepository = ExerciseRepository("exercise")
+    private val exerciseRepositoryEn = ExerciseRepository("exercise_en")
 
     init {
         getWorkoutPlans()
@@ -28,7 +34,11 @@ class PlanViewModel : BaseViewModel() {
     fun getWorkoutPlans() {
        launchWithErrorHandling(
             block = {
-                workoutPlanRepository.getAll(
+                if (currentLanguage == "en") {
+                    workoutPlanRepositoryEn
+                } else {
+                    workoutPlanRepository
+                }.getAll(
                     onResult = { list ->
                         _workoutPlanList.postValue(list)
                     },
@@ -47,7 +57,11 @@ class PlanViewModel : BaseViewModel() {
     private fun fetchCategories() {
         launchWithErrorHandling(
             block = {
-                repository.getAll(
+                if (currentLanguage == "en") {
+                    repositoryEn
+                } else {
+                    repository
+                }.getAll(
                     onResult = { list ->
                         _categories.postValue(list)
                     },
@@ -65,7 +79,11 @@ class PlanViewModel : BaseViewModel() {
     private fun fetchExercise() {
         launchWithErrorHandling(
             block = {
-                exerciseRepository.getAll(
+                if (currentLanguage == "en") {
+                    exerciseRepositoryEn
+                } else {
+                    exerciseRepository
+                }.getAll(
                     onResult = { list ->
                         _exercise.postValue(list)
                     },
@@ -86,7 +104,17 @@ class PlanViewModel : BaseViewModel() {
                 workoutPlanRepository.delete(
                     id,
                     onComplete = {
-                        _deleteWorkoutPlan.postValue(true)
+                       if (currentLanguage == "vi") {
+                           _deleteWorkoutPlan.postValue(true)
+                       }
+                    },
+                )
+                workoutPlanRepositoryEn.delete(
+                    id,
+                    onComplete = {
+                        if (currentLanguage == "en") {
+                            _deleteWorkoutPlan.postValue(true)
+                        }
                     },
                 )
             }

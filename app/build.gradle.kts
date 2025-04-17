@@ -58,4 +58,6 @@ dependencies {
     implementation (libs.exoplayer)
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
+    implementation (libs.translate)
+    implementation (libs.koin.android)
 }

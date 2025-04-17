@@ -23,12 +23,15 @@ import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddExerciseActivity : BaseActivity<ActivityAddExerciseBinding, AddExerciseViewModel>() {
 
     private val adapterExercise = AddExerciseAdapter(::onItemExerciseClick, ::onItemCount, ::onClickUpdate)
     private var mExerciseSelected = mutableListOf<Exercise>()
     private var mCategory: Category? = null
+    override val viewModel: AddExerciseViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAddExerciseBinding
         get() = ActivityAddExerciseBinding::inflate

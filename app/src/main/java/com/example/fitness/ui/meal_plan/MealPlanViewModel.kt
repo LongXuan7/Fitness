@@ -1,5 +1,6 @@
 package com.example.fitness.ui.meal_plan
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Meal
@@ -12,13 +13,14 @@ import com.example.fitness.data.repository.MyNutritionRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
 import java.time.LocalDate
+import java.util.Locale
 
-class MealPlanViewModel : BaseViewModel() {
-
-    private val repository = MealPlanRepository("meal_plans")
-    private val repositoryNutrition = MyNutritionRepository("my_nutritions")
-    private val repositoryMeal = MealRepository("meals")
-    private val repositorySport= SportRepository("sports")
+class MealPlanViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
+    private val repository = MealPlanRepository(if (currentLanguage == "em") "meal_plans_en" else "meal_plans")
+    private val repositoryNutrition = MyNutritionRepository(if (currentLanguage == "en") "my_nutritions_en" else "my_nutritions")
+    private val repositoryMeal = MealRepository(if (currentLanguage == "en") "meals_en" else "meals")
+    private val repositorySport= SportRepository(if (currentLanguage == "en") "sports_en" else "sports")
 
     init {
         getMyMealList()
