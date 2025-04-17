@@ -33,6 +33,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_back_re"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/back_meal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -209,6 +219,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/ll_select_time"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_clock_reminder"
@@ -280,12 +291,12 @@
                 app:layout_constraintStart_toStartOf="@+id/textView35"
                 app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <Switch
                 android:id="@+id/switch1"
                 android:layout_width="60dp"
                 android:layout_height="34dp"
                 android:checked="true"
-                android:padding="2dp"
+                android:padding="5dp"
                 android:showText="false"
                 android:thumb="@drawable/custom_thumb"
                 android:track="@drawable/custom_track"

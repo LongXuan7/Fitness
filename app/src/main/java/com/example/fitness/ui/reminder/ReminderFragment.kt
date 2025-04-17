@@ -3,6 +3,7 @@ package com.example.fitness.ui.reminder
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.fitness.data.model.Reminder
 import com.example.fitness.databinding.FragmentReminderBinding
 import com.example.fitness.ui.add_reminder.AddReminderActivity
@@ -28,6 +29,11 @@ class ReminderFragment : BaseFragment<FragmentReminderBinding, ReminderViewModel
         viewModel.reminderList.observe(viewLifecycleOwner){
             adapterReminder.submitList(it)
         }
+        viewModel.deleteReminder.observe(viewLifecycleOwner){
+            if (it){
+                Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun setUpOnClick() {
@@ -35,11 +41,13 @@ class ReminderFragment : BaseFragment<FragmentReminderBinding, ReminderViewModel
     }
 
     private fun onClickDelete(reminder: Reminder) {
-
+        reminder.id?.let { viewModel.deleteReminder(it) }
     }
 
     private fun onClickUpdate(reminder: Reminder) {
-
+        startActivity(Intent(requireContext(), AddReminderActivity::class.java).apply {
+            putExtra("reminder", reminder)
+        })
     }
 
 }

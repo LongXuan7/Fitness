@@ -33,4 +33,23 @@ class ReminderViewModel : BaseViewModel() {
             }
         )
     }
+
+    private val _deleteReminder = MutableLiveData(false)
+    val deleteReminder: LiveData<Boolean> = _deleteReminder
+
+    fun deleteReminder(id : String) {
+        launchWithErrorHandling(
+            block = {
+                reminderRepository.delete(
+                    id,
+                    onComplete = {
+                        _deleteReminder.postValue(true)
+                    }
+                )
+            },
+            onError = {
+                throw Exception(it)
+            }
+        )
+    }
 }

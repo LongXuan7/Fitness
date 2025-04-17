@@ -245,7 +245,6 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
         } else {
             binding.btnAddExercise.hide()
         }
-
     }
 
     private fun onItemClickDelete(workoutPlan: WorkoutPlan) {
