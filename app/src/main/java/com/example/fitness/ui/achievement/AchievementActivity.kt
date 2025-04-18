@@ -168,7 +168,6 @@ class AchievementActivity : BaseActivity<ActivityAchievementBinding, Achievement
     }
 
     private fun onItemClickWeek(item: List<WorkoutPlan>) {
-        Log.d("longnx", "onItemClickWeek: $item")
         startActivity(Intent(this, AchievementDetailActivity::class.java).apply {
             putExtra("workoutPlan", Gson().toJson(item))
         })

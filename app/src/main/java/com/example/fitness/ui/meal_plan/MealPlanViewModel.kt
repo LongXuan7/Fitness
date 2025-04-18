@@ -12,6 +12,7 @@ import com.example.fitness.data.repository.MealRepository
 import com.example.fitness.data.repository.MyNutritionRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 import java.util.Locale
 
@@ -65,7 +66,9 @@ class MealPlanViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
             block = {
                 repositoryNutrition.getAll(
                     onResult = { list ->
-                        _myNutritionList.postValue(list)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                        val filteredList = list.filter { it.user_id == userId }
+                        _myNutritionList.postValue(filteredList)
                     },
                     onError = { message ->
                         throw Exception(message)

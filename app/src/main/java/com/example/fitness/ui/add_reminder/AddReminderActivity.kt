@@ -16,6 +16,7 @@ import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.fitness.data.model.Reminder
 import com.example.fitness.data.model.Week
 import com.example.fitness.databinding.ActivityAddReminderBinding
@@ -30,6 +31,7 @@ import com.example.fitness.util.broadcast.ReminderReceiver
 import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterLinearHorizontal
 import com.example.fitness.util.ext.show
+import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -49,6 +51,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
     override val bindingInflater: (LayoutInflater) -> ActivityAddReminderBinding
         get() = ActivityAddReminderBinding::inflate
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("SetTextI18n")
     override fun setupViews() {
         fixKeyboardOverlap()
@@ -119,6 +122,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun setupOnClick() {
         binding.btnNextTime.setOnClickListener { nextWeek() }
         binding.btnBackTime.setOnClickListener { backWeek() }
@@ -128,6 +132,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
         binding.ivBackRe.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun updateReminder() {
         if (binding.etNote.text.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập ghi chú", Toast.LENGTH_SHORT).show()
@@ -136,6 +141,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
                 mReminder?.id.toString(),
                 binding.etNote.text.toString(),
                 mergeDateAndTime(selectedDate.toString(), binding.tvTime.text.toString()),
+                mReminder?.user_id.toString(),
                 binding.switch1.isChecked
             )
             viewModel.updateReminder(reminder)
@@ -145,6 +151,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun addReminder() {
         if (binding.etNote.text.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập ghi chú", Toast.LENGTH_SHORT).show()
@@ -153,6 +160,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
                 UUID.randomUUID().toString(),
                 binding.etNote.text.toString(),
                 mergeDateAndTime(selectedDate.toString(), binding.tvTime.text.toString()),
+                FirebaseAuth.getInstance().currentUser?.uid.toString(),
                 binding.switch1.isChecked
             )
             viewModel.addReminder(reminder)
@@ -458,6 +466,7 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("ScheduleExactAlarm")
     private fun scheduleReminder(reminder: Reminder) {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager

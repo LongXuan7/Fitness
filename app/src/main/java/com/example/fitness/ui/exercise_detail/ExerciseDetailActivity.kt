@@ -1,7 +1,9 @@
 package com.example.fitness.ui.exercise_detail
 
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
+import androidx.annotation.RequiresApi
 import com.example.fitness.R
 import com.example.fitness.data.model.Exercise
 import com.example.fitness.data.model.GuideStep
@@ -27,6 +29,7 @@ class ExerciseDetailActivity : BaseActivity<ActivityExerciseDetailBinding, Exerc
             ActivityExerciseDetailBinding.inflate(inflater)
         }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
         val exercise = intent.getSerializableExtra("exercise", Exercise::class.java)
         val title = intent.getStringExtra("title")

@@ -55,4 +55,5 @@
     <string name="l_i_nh_c_t_p_luy_n">LỜI NHẮC TẬP LUYỆN</string>
     <string name="b_i_t_p">Bài tập:</string>
     <string name="kh_ng_c_b_i_t_p">Không có bài tập</string>
+    <string name="ng_nh_p_b_ng_google">Đăng nhập bằng google</string>
 </resources>

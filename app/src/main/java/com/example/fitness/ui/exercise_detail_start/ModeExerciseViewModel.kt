@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.repository.WorkoutPlanRepository
 import com.example.fitness.util.base.BaseViewModel
-import java.util.Locale
 
 class ModeExerciseViewModel : BaseViewModel() {
 

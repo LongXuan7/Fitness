@@ -31,19 +31,19 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
 
         if (language == "en") {
             binding.radioButton2.isChecked = true
+            binding.textView31.text = "EN"
         } else {
             binding.radioButton.isChecked = true
+            binding.textView31.text = "VI"
         }
     }
 
     override fun setupOnClick() {
         binding.radioButton2.setOnClickListener {
             setLocale("en", "GB")
-            binding.textView31.text = "EN"
         }
         binding.radioButton.setOnClickListener {
             setLocale("vi", "VN")
-            binding.textView31.text = "VI"
         }
     }
 

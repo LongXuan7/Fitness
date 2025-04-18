@@ -55,4 +55,5 @@
     <string name="l_i_nh_c_t_p_luy_n">WORKOUT REMINDER</string>
     <string name="b_i_t_p">Exercise:</string>
     <string name="kh_ng_c_b_i_t_p">No exercises</string>
+    <string name="ng_nh_p_b_ng_google">Sign in with google</string>
 </resources>

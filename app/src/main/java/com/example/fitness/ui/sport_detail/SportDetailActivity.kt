@@ -10,6 +10,7 @@ import com.example.fitness.ui.sport.ImpactAdapter
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.loadImage
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.UUID
 
@@ -64,7 +65,7 @@ class SportDetailActivity : BaseActivity<ActivitySportDetailBinding, SportDetail
             id = UUID.randomUUID().toString(),
             meal_id = "",
             sport_id = sport?.id.toString(),
-            user_id = "1"
+            user_id = FirebaseAuth.getInstance().currentUser?.uid.toString(),
         )
         ) }
     }

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.fitness"
-        minSdk = 34
+        minSdk = 28
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -59,5 +59,11 @@ dependencies {
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
     implementation (libs.translate)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     implementation (libs.koin.android)
+    implementation (libs.play.services.auth)
+    implementation (libs.circleimageview)
 }

@@ -11,7 +11,7 @@ import com.example.fitness.data.repository.MealRepository
 import com.example.fitness.data.repository.MyNutritionRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
-import java.util.Locale
+import com.google.firebase.auth.FirebaseAuth
 
 class NutritionViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
     val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
@@ -43,7 +43,9 @@ class NutritionViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
                     repositoryNutrition
                 }.getAll(
                     onResult = { list ->
-                        _myNutritionList.postValue(list)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                        val filteredList = list.filter { it.user_id == userId }
+                        _myNutritionList.postValue(filteredList)
                     },
                     onError = { message ->
                         throw Exception(message)

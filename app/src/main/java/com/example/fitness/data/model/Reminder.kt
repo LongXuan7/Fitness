@@ -6,7 +6,8 @@ data class Reminder (
     val id: String? = null,
     val title: String? = null,
     val time: String? = null,
-    val status: Boolean = false,
+    val user_id: String? = null,
+    val status: Boolean = false
 ) : Serializable {
 
     fun toMap(): Map<String, Any?> {
@@ -14,6 +15,7 @@ data class Reminder (
             "id" to id,
             "title" to title,
             "time" to time,
+            "user_id" to user_id,
             "status" to status
         )
     }

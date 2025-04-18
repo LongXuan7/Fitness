@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Reminder
 import com.example.fitness.data.repository.ReminderRepository
 import com.example.fitness.util.base.BaseViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
 
 class ReminderViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
@@ -29,7 +30,9 @@ class ReminderViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
                     reminderRepository
                 }.getAll(
                     onResult = { reminders ->
-                        _reminderList.postValue(reminders)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                        val filteredReminders = reminders.filter { it.user_id == userId }
+                        _reminderList.postValue(filteredReminders)
                     },
                     onError = {
                         throw Exception(it)

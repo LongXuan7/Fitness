@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -36,6 +38,7 @@ class AddExerciseActivity : BaseActivity<ActivityAddExerciseBinding, AddExercise
     override val bindingInflater: (LayoutInflater) -> ActivityAddExerciseBinding
         get() = ActivityAddExerciseBinding::inflate
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
         setUpRecyclerViewExercise()
         mCategory = intent.getParcelableExtra("category", Category::class.java)

@@ -19,6 +19,7 @@ import com.example.fitness.databinding.ActivityAddExerciseBinding
 import com.example.fitness.ui.exercise_detail.ExerciseDetailActivity
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -114,7 +115,7 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
                 id = UUID.randomUUID().toString(),
                 time = LocalDate.now().toString(),
                 exercise_id = it.id,
-                user_id = "1",
+                user_id = FirebaseAuth.getInstance().currentUser?.uid.toString(),
                 set = it.set_temp,
                 completedSet = 0,
                 progress = 0

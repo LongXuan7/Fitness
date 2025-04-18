@@ -10,6 +10,7 @@ import com.example.fitness.data.repository.CategoryRepository
 import com.example.fitness.data.repository.ExerciseRepository
 import com.example.fitness.data.repository.WorkoutPlanRepository
 import com.example.fitness.util.base.BaseViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 class AchievementViewModel(sharedPref: SharedPreferences) : BaseViewModel(){
@@ -33,7 +34,11 @@ class AchievementViewModel(sharedPref: SharedPreferences) : BaseViewModel(){
             block = {
                 workoutPlanRepository.getAll(
                     onResult = { list ->
-                        _workoutPlanList.postValue(list)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+                        val filteredList = list.filter { workoutPlan ->
+                            workoutPlan.user_id == userId
+                        }
+                        _workoutPlanList.postValue(filteredList)
                     },
                     onError = { message ->
                         throw Exception(message)
