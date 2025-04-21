@@ -99,7 +99,7 @@
             android:background="@drawable/bg_btn_meal_plan"
             android:gravity="center"
             android:paddingVertical="15dp"
-            android:text="Bữa sáng"
+            android:text="@string/b_a_s_ng"
             android:textColor="@color/white"
             android:textSize="11sp" />
 
@@ -112,7 +112,7 @@
             android:background="@drawable/bg_btn_meal_plan_gray"
             android:gravity="center"
             android:paddingVertical="15dp"
-            android:text="Bữa trưa"
+            android:text="@string/b_a_tr_a"
             android:textColor="@color/black"
             android:textSize="11sp" />
 
@@ -124,7 +124,7 @@
             android:background="@drawable/bg_btn_meal_plan_gray"
             android:gravity="center"
             android:paddingVertical="15dp"
-            android:text="Bữa tối"
+            android:text="@string/b_a_t_i"
             android:textColor="@color/black"
             android:textSize="11sp" />
 

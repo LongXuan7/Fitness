@@ -1,7 +1,9 @@
 package com.example.fitness.ui.exercise_detail
 
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
+import androidx.annotation.RequiresApi
 import com.example.fitness.R
 import com.example.fitness.data.model.Exercise
 import com.example.fitness.data.model.GuideStep
@@ -13,17 +15,21 @@ import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterGrid
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExerciseDetailActivity : BaseActivity<ActivityExerciseDetailBinding, ExerciseDetailViewModel>() {
 
     private val adapterTag = TagAdapter()
     private val adapterGuideStep = GuideStepAdapter()
+    override val viewModel: ExerciseDetailViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityExerciseDetailBinding
         get() = { inflater ->
             ActivityExerciseDetailBinding.inflate(inflater)
         }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
         val exercise = intent.getSerializableExtra("exercise", Exercise::class.java)
         val title = intent.getStringExtra("title")

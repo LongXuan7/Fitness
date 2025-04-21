@@ -9,10 +9,13 @@ import com.example.fitness.databinding.FragmentHomeBinding
 import com.example.fitness.ui.achievement.AchievementActivity
 import com.example.fitness.util.OnMainFragmentListener
 import com.example.fitness.util.base.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private var listener: OnMainFragmentListener? = null
+    override val viewModel: HomeViewModel
+            by viewModel()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

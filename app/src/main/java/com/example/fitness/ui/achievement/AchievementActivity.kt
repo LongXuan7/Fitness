@@ -15,12 +15,14 @@ import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.google.gson.Gson
 import java.util.Calendar
 import java.util.UUID
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AchievementActivity : BaseActivity<ActivityAchievementBinding, AchievementViewModel>() {
 
     private val achievementAdapter = AchievementAdapter(::onItemClickWeek)
     private var currentCalendar: Calendar = Calendar.getInstance()
     private var workoutPlanList: List<WorkoutPlan> = emptyList()
+    override val viewModel: AchievementViewModel by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAchievementBinding
         get() = ActivityAchievementBinding::inflate
@@ -166,7 +168,6 @@ class AchievementActivity : BaseActivity<ActivityAchievementBinding, Achievement
     }
 
     private fun onItemClickWeek(item: List<WorkoutPlan>) {
-        Log.d("longnx", "onItemClickWeek: $item")
         startActivity(Intent(this, AchievementDetailActivity::class.java).apply {
             putExtra("workoutPlan", Gson().toJson(item))
         })

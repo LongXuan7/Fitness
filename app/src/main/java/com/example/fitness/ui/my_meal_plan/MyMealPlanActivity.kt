@@ -13,8 +13,10 @@ import com.example.fitness.ui.meal_plan.MealPlanViewModel
 import com.example.fitness.ui.meal_plan.OnTabSelectedListener
 import com.example.fitness.ui.nutrition.NutritionFragment
 import com.example.fitness.util.base.BaseActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MyMealPlanActivity : BaseActivity<ActivityMyMealPlanBinding, MealPlanViewModel>(), OnTabSelectedListener {
+    override val viewModel: MealPlanViewModel by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityMyMealPlanBinding
         get() = ActivityMyMealPlanBinding::inflate

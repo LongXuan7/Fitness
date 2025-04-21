@@ -11,6 +11,7 @@ import com.example.fitness.data.model.Sport
 import com.example.fitness.databinding.FragmentNutritionBinding
 import com.example.fitness.util.base.BaseFragment
 import com.example.fitness.util.ext.setAdapterLinearVertical
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NutritionFragment : BaseFragment<FragmentNutritionBinding, NutritionViewModel>() {
 
@@ -20,6 +21,8 @@ class NutritionFragment : BaseFragment<FragmentNutritionBinding, NutritionViewMo
     private var mySport = listOf<Sport>()
     private var mealPlan: String? = null
     private var date: String? = null
+    override val viewModel: NutritionViewModel
+            by viewModel()
 
     override fun inflateBinding(
         inflater: LayoutInflater,

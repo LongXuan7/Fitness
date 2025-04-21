@@ -8,6 +8,7 @@ import com.example.fitness.util.base.BaseViewModel
 class ModeExerciseViewModel : BaseViewModel() {
 
     private val workoutPlanRepository = WorkoutPlanRepository("workout_plan")
+    private val workoutPlanRepositoryEn = WorkoutPlanRepository("workout_plan_en")
 
     private val _updateProgress = MutableLiveData(false)
     val updateProgress: LiveData<Boolean> get() = _updateProgress
@@ -16,6 +17,13 @@ class ModeExerciseViewModel : BaseViewModel() {
        launchWithErrorHandling(
            block = {
                workoutPlanRepository.update(
+                   id,
+                   updates = mapOf("progress" to progress),
+                   onComplete = {
+                       _updateProgress.postValue(true)
+                   },
+               )
+               workoutPlanRepositoryEn.update(
                    id,
                    updates = mapOf("progress" to progress),
                    onComplete = {

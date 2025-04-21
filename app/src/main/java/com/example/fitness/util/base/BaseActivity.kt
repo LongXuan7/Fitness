@@ -6,44 +6,40 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.example.fitness.util.dialogManager.DialogManager
 import com.example.fitness.util.dialogManager.DialogManagerImpl
-import java.lang.reflect.ParameterizedType
 
-abstract class BaseActivity <VB : ViewBinding, VM : BaseViewModel> : AppCompatActivity() {
+
+abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivity() {
 
     protected lateinit var binding: VB
+    protected abstract val viewModel: VM
     private var dialogManager: DialogManager? = null
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getViewModelClass(): Class<VM> {
-        val superclass = javaClass.genericSuperclass as ParameterizedType
-        return superclass.actualTypeArguments[1] as Class<VM>
-    }
-
-    protected val viewModel: VM by lazy {
-        ViewModelProvider(this)[getViewModelClass()]
-    }
+    protected abstract val bindingInflater: (LayoutInflater) -> VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         binding = bindingInflater.invoke(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.root.setPadding(0, systemBars.top, 0, 0)
+            view.setPadding(0, systemBars.top, 0, 0)
             WindowInsetsCompat.CONSUMED
         }
+
+
         dialogManager = DialogManagerImpl(this)
+
         setupViews()
         setupOnClick()
         setupObservers()
     }
 
-    protected abstract val bindingInflater: (LayoutInflater) -> VB
     abstract fun setupViews()
     abstract fun setupOnClick()
     abstract fun setupObservers()
@@ -62,8 +58,10 @@ abstract class BaseActivity <VB : ViewBinding, VM : BaseViewModel> : AppCompatAc
     }
 
     open fun registerLiveData() {
-        viewModel.isLoading.observe(this) {
-            if (it) showLoading() else hideLoading()
+        if (viewModel is BaseViewModel) {
+            (viewModel as BaseViewModel).isLoading.observe(this) {
+                if (it) showLoading() else hideLoading()
+            }
         }
     }
 }

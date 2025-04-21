@@ -20,6 +20,7 @@ import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterGrid
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExerciseDetailStartActivity :
     BaseActivity<ActivityExerciseDetailStartBinding, ExerciseDetailViewModel>() {
@@ -29,7 +30,8 @@ class ExerciseDetailStartActivity :
     private var exercise: Exercise? = null
     private var title: String? = null
     private var workoutPlan: WorkoutPlan? = null
-
+    override val viewModel: ExerciseDetailViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityExerciseDetailStartBinding
         get() = { inflater ->

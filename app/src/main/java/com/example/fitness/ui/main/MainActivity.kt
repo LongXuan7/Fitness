@@ -1,6 +1,8 @@
 package com.example.fitness.ui.main
 
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +17,8 @@ import com.example.fitness.ui.plan.PlanFragment
 import com.example.fitness.ui.profile.ProfileFragment
 import com.example.fitness.ui.reminder.ReminderFragment
 import com.example.fitness.util.OnMainFragmentListener
+import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), OnMainFragmentListener {
 
@@ -30,6 +34,11 @@ class MainActivity : AppCompatActivity(), OnMainFragmentListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val sharedPref = getSharedPreferences("settings", MODE_PRIVATE)
+        val language = sharedPref.getString("language", "vi") ?: "vi"
+        val country = sharedPref.getString("country", "vi") ?: "vi"
+
+        setLocale(language, country)
         transitionToFragment(HomeFragment())
         setUpBottomNavigation()
         checkSwap(intent.getBooleanExtra("FoodFragment", false))
@@ -89,6 +98,22 @@ class MainActivity : AppCompatActivity(), OnMainFragmentListener {
             transitionToFragment(ReminderFragment())
         } else {
             binding?.bottomNavigationView?.selectedItemId = menuId
+        }
+    }
+
+    private fun setLocale(languageCode: String, country: String = "") {
+        val locale = Locale(languageCode, country)
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+
+        val sharedPref = getSharedPreferences("settings", MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("language", languageCode)
+            putString("country", country)
+            apply()
         }
     }
 }

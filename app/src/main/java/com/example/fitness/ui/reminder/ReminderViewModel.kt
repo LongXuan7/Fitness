@@ -1,13 +1,18 @@
 package com.example.fitness.ui.reminder
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Reminder
 import com.example.fitness.data.repository.ReminderRepository
 import com.example.fitness.util.base.BaseViewModel
+import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
-class ReminderViewModel : BaseViewModel() {
+class ReminderViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
     private val reminderRepository = ReminderRepository("reminder")
+    private val reminderRepositoryEn = ReminderRepository("reminder_en")
 
     init {
         getAllReminders()
@@ -19,14 +24,49 @@ class ReminderViewModel : BaseViewModel() {
     private fun getAllReminders() {
         launchWithErrorHandling(
             block = {
-               reminderRepository.getAll(
+                if (currentLanguage == "en") {
+                    reminderRepositoryEn
+                } else {
+                    reminderRepository
+                }.getAll(
                     onResult = { reminders ->
-                        _reminderList.postValue(reminders)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                        val filteredReminders = reminders.filter { it.user_id == userId }
+                        _reminderList.postValue(filteredReminders)
                     },
                     onError = {
                         throw Exception(it)
                     }
                )
+            },
+            onError = {
+                throw Exception(it)
+            }
+        )
+    }
+
+    private val _deleteReminder = MutableLiveData(false)
+    val deleteReminder: LiveData<Boolean> = _deleteReminder
+
+    fun deleteReminder(id : String) {
+        launchWithErrorHandling(
+            block = {
+                reminderRepository.delete(
+                    id,
+                    onComplete = {
+                       if (currentLanguage == "vi") {
+                           _deleteReminder.postValue(true)
+                       }
+                    }
+                )
+                reminderRepositoryEn.delete(
+                    id,
+                    onComplete = {
+                        if (currentLanguage == "en") {
+                            _deleteReminder.postValue(true)
+                        }
+                    }
+                )
             },
             onError = {
                 throw Exception(it)

@@ -68,7 +68,7 @@
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Những lợi ích chính:"
+            android:text="@string/nh_ng_l_i_ch_ch_nh"
             app:layout_constraintStart_toStartOf="@+id/tv_description_sport_detail"
             app:layout_constraintTop_toBottomOf="@+id/tv_description_sport_detail" />
 
@@ -88,7 +88,7 @@
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tác động:"
+            android:text="@string/t_c_ng"
             app:layout_constraintStart_toStartOf="@+id/rcv_benefit"
             app:layout_constraintTop_toBottomOf="@+id/rcv_benefit" />
 
@@ -113,7 +113,7 @@
             android:background="@drawable/bg_add_sport_detail"
             android:paddingHorizontal="30dp"
             android:paddingVertical="10dp"
-            android:text="Thêm Vào Chế Độ Dinh Dưỡng"
+            android:text="@string/th_m_v_o_ch_dinh_d_ng"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

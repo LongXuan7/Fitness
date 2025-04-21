@@ -1,5 +1,6 @@
 package com.example.fitness.ui.nutrition
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Meal
 import com.example.fitness.data.model.MealPlan
@@ -10,13 +11,18 @@ import com.example.fitness.data.repository.MealRepository
 import com.example.fitness.data.repository.MyNutritionRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
-import java.time.LocalDate
+import com.google.firebase.auth.FirebaseAuth
 
-class NutritionViewModel : BaseViewModel() {
+class NutritionViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
     private val repositoryNutrition = MyNutritionRepository("my_nutritions")
+    private val repositoryNutritionEn = MyNutritionRepository("my_nutritions_en")
     private val mealPlanRepository = MealPlanRepository("meal_plans")
+    private val mealPlanRepositoryEn = MealPlanRepository("meal_plans_en")
     private val repositoryMeal = MealRepository("meals")
-    private val repositorySport= SportRepository("sports")
+    private val repositoryMealEn = MealRepository("meals_en")
+    private val repositorySport = SportRepository("sports")
+    private val repositorySportEn = SportRepository("sports_en")
 
     init {
         getMyNutritionList()
@@ -31,9 +37,15 @@ class NutritionViewModel : BaseViewModel() {
     private fun getMyNutritionList() {
         launchWithErrorHandling(
             block = {
-                repositoryNutrition.getAll(
+                if (currentLanguage == "en") {
+                    repositoryNutritionEn
+                } else {
+                    repositoryNutrition
+                }.getAll(
                     onResult = { list ->
-                        _myNutritionList.postValue(list)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                        val filteredList = list.filter { it.user_id == userId }
+                        _myNutritionList.postValue(filteredList)
                     },
                     onError = { message ->
                         throw Exception(message)
@@ -50,7 +62,11 @@ class NutritionViewModel : BaseViewModel() {
     private fun getMyMealList() {
         launchWithErrorHandling(
             block = {
-                repositoryMeal.getAll(
+                if (currentLanguage == "en") {
+                    repositoryMealEn
+                } else {
+                    repositoryMeal
+                }.getAll(
                     onResult = { list ->
                         _myMealList.postValue(list)
                     },
@@ -69,7 +85,11 @@ class NutritionViewModel : BaseViewModel() {
     private fun getMySportList() {
         launchWithErrorHandling(
             block = {
-                repositorySport.getAll(
+                if (currentLanguage == "en") {
+                    repositorySportEn
+                } else {
+                    repositorySport
+                }.getAll(
                     onResult = { list ->
                         _mySportList.postValue(list)
                     },
@@ -91,7 +111,20 @@ class NutritionViewModel : BaseViewModel() {
                 mealPlanRepository.add(
                     date,
                     mealPlan,
-                    onComplete = {_addMealPlan.postValue(true)}
+                    onComplete = {
+                        if (currentLanguage == "vi") {
+                            _addMealPlan.postValue(true)
+                        }
+                    }
+                )
+                mealPlanRepositoryEn.add(
+                    date,
+                    mealPlan,
+                    onComplete = {
+                        if (currentLanguage == "en") {
+                            _addMealPlan.postValue(true)
+                        }
+                    }
                 )
             }
         )
@@ -106,7 +139,15 @@ class NutritionViewModel : BaseViewModel() {
             block = {
                 repositoryNutrition.delete(
                     nutrition.id.toString(),
-                    onComplete = {_deleteNutrition.postValue(true)}
+                    onComplete = {  if (currentLanguage == "vi") {
+                        _addMealPlan.postValue(true)
+                    } }
+                )
+                repositoryNutritionEn.delete(
+                    nutrition.id.toString(),
+                    onComplete = {  if (currentLanguage == "en") {
+                        _addMealPlan.postValue(true)
+                    } }
                 )
             }
         )

@@ -18,6 +18,7 @@ class WeekMealPlanAdapter(
 
     private var selectedPosition = currentDate
     private var mWeek: Week? = null
+    private var isItemClickable: Boolean = true
 
     companion object {
         val DIFF_WEEK = object : DiffUtil.ItemCallback<Week>() {
@@ -58,13 +59,15 @@ class WeekMealPlanAdapter(
             )
 
             root.setOnClickListener {
-                val previousSelected = selectedPosition
-                selectedPosition = position
+                if (isItemClickable) {
+                    val previousSelected = selectedPosition
+                    selectedPosition = position
 
-                notifyItemChanged(previousSelected)
-                notifyItemChanged(selectedPosition)
+                    notifyItemChanged(previousSelected)
+                    notifyItemChanged(selectedPosition)
 
-                listener.invoke(item)
+                    listener.invoke(item)
+                }
             }
 
         }
@@ -73,5 +76,9 @@ class WeekMealPlanAdapter(
     fun setSelectedPosition(position: Int) {
         selectedPosition = position
         mWeek?.let { listener.invoke(it) }
+    }
+
+    fun setItemClickable(clickable: Boolean) {
+        isItemClickable = clickable
     }
 }

@@ -1,6 +1,6 @@
 package com.example.fitness.ui.add_exercise
 
-import android.util.Log
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Category
@@ -10,12 +10,16 @@ import com.example.fitness.data.repository.CategoryRepository
 import com.example.fitness.data.repository.ExerciseRepository
 import com.example.fitness.data.repository.WorkoutPlanRepository
 import com.example.fitness.util.base.BaseViewModel
-import com.google.gson.Gson
 
-class AddExerciseViewModel : BaseViewModel() {
+class AddExerciseViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
+
     private val repository = CategoryRepository("categories")
+    private val repositoryEn = CategoryRepository("categores_en")
     private val exerciseRepository = ExerciseRepository("exercise")
+    private val exerciseRepositoryEn = ExerciseRepository("exercise_en")
     private val workoutPlanRepository = WorkoutPlanRepository("workout_plan")
+    private val workoutPlanRepositoryEn = WorkoutPlanRepository("workout_plan_en")
 
     init {
         fetchCategories()
@@ -27,7 +31,11 @@ class AddExerciseViewModel : BaseViewModel() {
     private fun fetchCategories() {
         launchWithErrorHandling(
             block = {
-                repository.getAll(
+                if (currentLanguage == "en") {
+                    repositoryEn
+                } else {
+                    repository
+                }.getAll(
                     onResult = { list ->
                         _categories.postValue(list)
                     },
@@ -42,10 +50,14 @@ class AddExerciseViewModel : BaseViewModel() {
     private val _exercise = MutableLiveData<List<Exercise>>()
     val exercise: LiveData<List<Exercise>> get() = _exercise
 
-    fun fetchExercise(id : Int?) {
+    fun fetchExercise(id: Int?) {
         launchWithErrorHandling(
             block = {
-                exerciseRepository.getAll(
+                if (currentLanguage == "en") {
+                    exerciseRepositoryEn
+                } else {
+                    exerciseRepository
+                }.getAll(
                     onResult = { list ->
                         val listExercise = list.filter { it.id == id }
                         _exercise.postValue(listExercise)
@@ -69,7 +81,14 @@ class AddExerciseViewModel : BaseViewModel() {
                     updates = mapOf(
                         "count_temp" to count.toInt()
                     ),
-                   onComplete = { _updateCountTemp.postValue(true) }
+                    onComplete = { _updateCountTemp.postValue(true) }
+                )
+                repositoryEn.update(
+                    id.toString(),
+                    updates = mapOf(
+                        "count_temp" to count.toInt()
+                    ),
+                    onComplete = { _updateCountTemp.postValue(true) }
                 )
             }
         )
@@ -82,6 +101,13 @@ class AddExerciseViewModel : BaseViewModel() {
         launchWithErrorHandling(
             block = {
                 repository.update(
+                    id.toString(),
+                    updates = mapOf(
+                        "count_temp" to 0
+                    ),
+                    onComplete = { _updateAllCountTemp.postValue(true) }
+                )
+                repositoryEn.update(
                     id.toString(),
                     updates = mapOf(
                         "count_temp" to 0
@@ -105,6 +131,13 @@ class AddExerciseViewModel : BaseViewModel() {
                     ),
                     onComplete = { _updateCountTemExercise.postValue(true) }
                 )
+                exerciseRepositoryEn.update(
+                    id.toString(),
+                    updates = mapOf(
+                        "set_temp" to count
+                    ),
+                    onComplete = { _updateCountTemExercise.postValue(true) }
+                )
             }
         )
     }
@@ -120,7 +153,14 @@ class AddExerciseViewModel : BaseViewModel() {
                     updates = mapOf(
                         "set_temp" to 0
                     ),
-                    onComplete = { _updateAllSetTemp.postValue(true) }
+                    onComplete = { if (currentLanguage == "vi") _updateAllSetTemp.postValue(true) }
+                )
+                exerciseRepositoryEn.update(
+                    id.toString(),
+                    updates = mapOf(
+                        "set_temp" to 0
+                    ),
+                    onComplete = { if (currentLanguage == "en") _updateAllSetTemp.postValue(true) }
                 )
             }
         )
@@ -135,7 +175,20 @@ class AddExerciseViewModel : BaseViewModel() {
                 workoutPlanRepository.add(
                     id = workoutPlan.id.toString(),
                     data = workoutPlan,
-                    onComplete = { _addWorkoutPlan.postValue(true) }
+                    onComplete = {
+                        if (currentLanguage == "vi") {
+                            _addWorkoutPlan.postValue(true)
+                        }
+                    }
+                )
+                workoutPlanRepositoryEn.add(
+                    id = workoutPlan.id.toString(),
+                    data = workoutPlan,
+                    onComplete = {
+                        if (currentLanguage == "en") {
+                            _addWorkoutPlan.postValue(true)
+                        }
+                    }
                 )
             }
         )

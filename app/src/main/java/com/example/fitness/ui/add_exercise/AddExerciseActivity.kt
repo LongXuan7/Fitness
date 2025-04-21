@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,16 +25,20 @@ import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddExerciseActivity : BaseActivity<ActivityAddExerciseBinding, AddExerciseViewModel>() {
 
     private val adapterExercise = AddExerciseAdapter(::onItemExerciseClick, ::onItemCount, ::onClickUpdate)
     private var mExerciseSelected = mutableListOf<Exercise>()
     private var mCategory: Category? = null
+    override val viewModel: AddExerciseViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAddExerciseBinding
         get() = ActivityAddExerciseBinding::inflate
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
         setUpRecyclerViewExercise()
         mCategory = intent.getParcelableExtra("category", Category::class.java)

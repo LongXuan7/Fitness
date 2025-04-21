@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Base.Theme.Fitness" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/black</item>
+
     </style>
 
     <style name="Theme.Fitness" parent="Base.Theme.Fitness" />
@@ -13,5 +14,10 @@
 
     <style name="NoRippleBottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemRippleColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Button" parent="Theme.AppCompat.Light">
+       <item name="colorAccent">@color/red</item>
+       <item name="android:textColorPrimary">@color/white</item>
     </style>
 </resources>

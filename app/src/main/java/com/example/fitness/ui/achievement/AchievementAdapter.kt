@@ -1,7 +1,6 @@
 package com.example.fitness.ui.achievement
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -63,11 +62,11 @@ class AchievementAdapter(
 
 
             if (matchedWorkouts.isNotEmpty()) {
-                val complate = matchedWorkouts.filter { it.completedSet == it.set }
-                tvComplateSet.text = if (complate.isNotEmpty()) complate.size.toString() else "0"
+                val complete = matchedWorkouts.filter { it.completedSet == it.set }
+                tvComplateSet.text = if (complete.isNotEmpty()) complete.size.toString() else "0"
                 tvSet.text = matchedWorkouts.size.toString()
 
-                if (matchedWorkouts[position].set == matchedWorkouts[position].completedSet) {
+                if (complete.isNotEmpty()) {
                     binding.tvStatusAr.setTextColor(ContextCompat.getColor(root.context, R.color.light_green))
                     binding.tvStatusAr.text = "Hoàn thành"
                     binding.ivStatusAr.setImageResource(R.drawable.check_circle_green)

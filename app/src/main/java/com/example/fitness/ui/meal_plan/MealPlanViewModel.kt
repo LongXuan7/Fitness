@@ -1,5 +1,6 @@
 package com.example.fitness.ui.meal_plan
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fitness.data.model.Meal
@@ -11,14 +12,16 @@ import com.example.fitness.data.repository.MealRepository
 import com.example.fitness.data.repository.MyNutritionRepository
 import com.example.fitness.data.repository.SportRepository
 import com.example.fitness.util.base.BaseViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
+import java.util.Locale
 
-class MealPlanViewModel : BaseViewModel() {
-
-    private val repository = MealPlanRepository("meal_plans")
-    private val repositoryNutrition = MyNutritionRepository("my_nutritions")
-    private val repositoryMeal = MealRepository("meals")
-    private val repositorySport= SportRepository("sports")
+class MealPlanViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
+    val currentLanguage = sharedPref.getString("language", "vi") ?: "vi"
+    private val repository = MealPlanRepository(if (currentLanguage == "em") "meal_plans_en" else "meal_plans")
+    private val repositoryNutrition = MyNutritionRepository(if (currentLanguage == "en") "my_nutritions_en" else "my_nutritions")
+    private val repositoryMeal = MealRepository(if (currentLanguage == "en") "meals_en" else "meals")
+    private val repositorySport= SportRepository(if (currentLanguage == "en") "sports_en" else "sports")
 
     init {
         getMyMealList()
@@ -63,7 +66,9 @@ class MealPlanViewModel : BaseViewModel() {
             block = {
                 repositoryNutrition.getAll(
                     onResult = { list ->
-                        _myNutritionList.postValue(list)
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                        val filteredList = list.filter { it.user_id == userId }
+                        _myNutritionList.postValue(filteredList)
                     },
                     onError = { message ->
                         throw Exception(message)

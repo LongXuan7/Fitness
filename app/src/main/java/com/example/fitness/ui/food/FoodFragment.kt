@@ -8,9 +8,10 @@ import com.example.fitness.ui.meal.MealActivity
 import com.example.fitness.ui.my_meal_plan.MyMealPlanActivity
 import com.example.fitness.ui.sport.SportActivity
 import com.example.fitness.util.base.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FoodFragment : BaseFragment<FragmentFoodBinding, FoodViewModel>() {
-
+    override val viewModel: FoodViewModel by viewModel()
 
     override fun inflateBinding(
         inflater: LayoutInflater,

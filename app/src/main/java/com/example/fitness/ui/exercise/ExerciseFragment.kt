@@ -14,12 +14,14 @@ import com.example.fitness.util.base.BaseFragment
 import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExerciseFragment : BaseFragment<FragmentExerciseBinding, CategoryViewmodel>() {
 
     private val adapterCategory = CategoryAdapter(::onItemCategoryClick)
     private val adapterExercise = ExerciseAdapter(::onItemExerciseClick)
     private var mCategory: Category? = null
+    override val viewModel : CategoryViewmodel by viewModel()
 
     override fun inflateBinding(
         inflater: LayoutInflater,

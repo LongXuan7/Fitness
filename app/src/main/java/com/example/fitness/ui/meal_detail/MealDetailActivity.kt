@@ -1,21 +1,28 @@
 package com.example.fitness.ui.meal_detail
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.fitness.data.model.Meal
 import com.example.fitness.data.model.MyNutrition
 import com.example.fitness.databinding.ActivityMealDetailBinding
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.loadImage
+import com.google.firebase.auth.FirebaseAuth
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.UUID
 
 class MealDetailActivity : BaseActivity<ActivityMealDetailBinding, MealDetailViewModel>() {
 
     private var meal : Meal? = null
+    override val viewModel: MealDetailViewModel
+            by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityMealDetailBinding
         get() = ActivityMealDetailBinding::inflate
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
         meal = intent.getSerializableExtra("meal", Meal::class.java)
         setUpData(meal)
@@ -43,7 +50,7 @@ class MealDetailActivity : BaseActivity<ActivityMealDetailBinding, MealDetailVie
             id = UUID.randomUUID().toString(),
             meal_id = meal?.id.toString(),
             sport_id = "",
-            user_id = "1"
+            user_id = FirebaseAuth.getInstance().currentUser?.uid.toString()
         )) }
     }
 
