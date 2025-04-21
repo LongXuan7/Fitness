@@ -33,7 +33,7 @@ class MealDetailActivity : BaseActivity<ActivityMealDetailBinding, MealDetailVie
         binding.tvTitleMealDetail.text = meal?.title
         binding.tvKcal.text = meal?.calo
         binding.tvProtein.text = meal?.protein
-        binding.tvCarbs.text = meal?.carbs
+        binding.tvCarbs.text = meal?.carb
         binding.tvFat.text = meal?.fat
         binding.tvDescriptionMealDetail.text = meal?.description
         binding.tvIronMealDetail.text = meal?.iron

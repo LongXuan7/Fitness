@@ -11,7 +11,7 @@ data class Meal (
     val canxi : String? = null,
     val protein : String? = null,
     val fat : String? = null,
-    val carbs : String? = null,
+    val carb : String? = null,
     val iron : String? = null,
     val cholesterol : String? = null,
     val kali : String? = null,
