@@ -17,6 +17,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.example.fitness.data.model.Meal
 import com.example.fitness.data.model.Reminder
 import com.example.fitness.data.model.Week
 import com.example.fitness.databinding.ActivityAddReminderBinding
@@ -55,7 +56,12 @@ class AddReminderActivity : BaseActivity<ActivityAddReminderBinding, AddReminder
     @SuppressLint("SetTextI18n")
     override fun setupViews() {
         fixKeyboardOverlap()
-        mReminder = intent.getSerializableExtra("reminder", Reminder::class.java)
+        mReminder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("reminder", Reminder::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("reminder") as? Reminder
+        }
 
         if (mReminder != null) {
             binding.tvMonth.text = formatToMonthVietnamese(mReminder?.time ?: "")

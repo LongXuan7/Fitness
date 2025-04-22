@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.fitness.R
 import com.example.fitness.data.model.Category
 import com.example.fitness.data.model.Exercise
+import com.example.fitness.data.model.Reminder
 import com.example.fitness.databinding.ActivityAddExerciseBinding
 import com.example.fitness.ui.exercise.CategoryAdapter
 import com.example.fitness.ui.exercise.ExerciseAdapter
@@ -41,7 +42,12 @@ class AddExerciseActivity : BaseActivity<ActivityAddExerciseBinding, AddExercise
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
         setUpRecyclerViewExercise()
-        mCategory = intent.getParcelableExtra("category", Category::class.java)
+        mCategory = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("category", Category::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("category") as? Category
+        }
         viewModel.fetchExercise(mCategory?.id)
     }
 

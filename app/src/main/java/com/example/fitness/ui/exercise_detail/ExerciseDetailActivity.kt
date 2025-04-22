@@ -29,9 +29,14 @@ class ExerciseDetailActivity : BaseActivity<ActivityExerciseDetailBinding, Exerc
             ActivityExerciseDetailBinding.inflate(inflater)
         }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
-        val exercise = intent.getSerializableExtra("exercise", Exercise::class.java)
+        val exercise = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("exercise", Exercise::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("exercise") as? Exercise
+        }
+
         val title = intent.getStringExtra("title")
         title?.let {
             binding.tvTitleExercise.text = title

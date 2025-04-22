@@ -2,6 +2,7 @@ package com.example.fitness.ui.mode_exercise
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fitness.R
 import com.example.fitness.data.model.Exercise
+import com.example.fitness.data.model.Reminder
 import com.example.fitness.data.model.WorkoutPlan
 import com.example.fitness.databinding.ActivityModeExerciseBinding
 import com.example.fitness.ui.exercise_detail_start.ModeExerciseViewModel
@@ -36,8 +38,19 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
         get() = ActivityModeExerciseBinding::inflate
 
     override fun setupViews() {
-        exercise = intent.getSerializableExtra("exercise", Exercise::class.java)
-        workoutPlan = intent.getSerializableExtra("workoutPlan", WorkoutPlan::class.java)
+        exercise = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("exercise", Exercise::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("exercise") as? Exercise
+        }
+
+        workoutPlan = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("workoutPlan", WorkoutPlan::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("workoutPlan") as? WorkoutPlan
+        }
 
         startVideo(exercise?.video_url)
         timeLeftInSeconds = exercise?.time?.toInt() ?: 0

@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.fitness.data.model.Meal
 import com.example.fitness.data.model.MyNutrition
+import com.example.fitness.data.model.WorkoutPlan
 import com.example.fitness.databinding.ActivityMealDetailBinding
 import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.loadImage
@@ -24,7 +25,12 @@ class MealDetailActivity : BaseActivity<ActivityMealDetailBinding, MealDetailVie
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun setupViews() {
-        meal = intent.getSerializableExtra("meal", Meal::class.java)
+        meal = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("meal", Meal::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("meal") as? Meal
+        }
         setUpData(meal)
     }
 

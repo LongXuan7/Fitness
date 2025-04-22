@@ -1,7 +1,9 @@
 package com.example.fitness.ui.sport_detail
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Toast
+import com.example.fitness.data.model.Exercise
 import com.example.fitness.data.model.MyNutrition
 import com.example.fitness.data.model.Sport
 import com.example.fitness.databinding.ActivitySportDetailBinding
@@ -26,7 +28,12 @@ class SportDetailActivity : BaseActivity<ActivitySportDetailBinding, SportDetail
         get() = ActivitySportDetailBinding::inflate
 
     override fun setupViews() {
-        sport = intent.getSerializableExtra("sport", Sport::class.java)
+        sport = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("sport", Sport::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("sport") as? Sport
+        }
         setData()
     }
 

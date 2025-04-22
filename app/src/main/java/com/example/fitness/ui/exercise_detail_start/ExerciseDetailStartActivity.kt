@@ -2,6 +2,7 @@ package com.example.fitness.ui.exercise_detail_start
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import com.example.fitness.R
@@ -39,9 +40,19 @@ class ExerciseDetailStartActivity :
         }
 
     override fun setupViews() {
-        exercise = intent.getSerializableExtra("exercise", Exercise::class.java)
+        exercise = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            intent.getSerializableExtra("exercise", Exercise::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("exercise") as? Exercise
+        }
         title = intent.getStringExtra("title")
-        workoutPlan = intent.getSerializableExtra("workoutPlan", WorkoutPlan::class.java)
+        workoutPlan = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("workoutPlan", WorkoutPlan::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("workoutPlan") as? WorkoutPlan
+        }
 
         title?.let {
             binding.tvTitleExercise.text = title
