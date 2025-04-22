@@ -47,8 +47,8 @@ class MealViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
             block = {
                 mealRepository.getAll(
                     onResult = { list ->
-                        list.filter { it.id == id}
-                        _meals.postValue(list)
+                        val listFilter = list.filter { it.meal_category_id == id}
+                        _meals.postValue(listFilter)
                     },
                     onError = { message ->
                         throw Exception(message)

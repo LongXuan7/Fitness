@@ -47,8 +47,8 @@ class SportViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
             block = {
                 sportRepository.getAll(
                     onResult = { list ->
-                        list.filter { it.id == id}
-                        _sport.postValue(list)
+                        val listFilter = list.filter { it.sportCategoryId == id}
+                        _sport.postValue(listFilter)
                     },
                     onError = { message ->
                         throw Exception(message)
