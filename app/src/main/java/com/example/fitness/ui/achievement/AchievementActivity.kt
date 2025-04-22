@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import java.util.Calendar
 import java.util.UUID
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.LocalDate
 
 class AchievementActivity : BaseActivity<ActivityAchievementBinding, AchievementViewModel>() {
 
@@ -28,6 +29,8 @@ class AchievementActivity : BaseActivity<ActivityAchievementBinding, Achievement
         get() = ActivityAchievementBinding::inflate
 
     override fun setupViews() {
+        binding.tvMonth.text = "Tháng ${LocalDate.now().monthValue}"
+        binding.tvYear.text = LocalDate.now().year.toString()
     }
 
     override fun setupOnClick() {
