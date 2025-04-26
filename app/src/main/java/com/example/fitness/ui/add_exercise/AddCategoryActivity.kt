@@ -30,8 +30,8 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
 
     private val adapterCategory = AddCategoryAdapter(::onItemCategoryClick)
     private var mCategories = mutableListOf<Category>()
-    override val viewModel: AddExerciseViewModel
-            by viewModel()
+    private var mDate: String = ""
+    override val viewModel: AddExerciseViewModel by viewModel()
 
     override val bindingInflater: (LayoutInflater) -> ActivityAddCategoryBinding
         get() = ActivityAddCategoryBinding::inflate
@@ -40,8 +40,7 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
         val sharedPref = getSharedPreferences("settings", MODE_PRIVATE)
         val language = sharedPref.getString("language", "vi") ?: "vi"
         val country = sharedPref.getString("country", "vi") ?: "vi"
-
-        Log.d("lngnx", "setupViews: $language")
+        mDate = intent.getStringExtra("date") ?: ""
         setUpRecyclerView()
     }
 
@@ -113,7 +112,7 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
         list?.forEach {
             val workoutPlan = WorkoutPlan(
                 id = UUID.randomUUID().toString(),
-                time = LocalDate.now().toString(),
+                time = mDate,
                 exercise_id = it.id,
                 user_id = FirebaseAuth.getInstance().currentUser?.uid.toString(),
                 set = it.set_temp,

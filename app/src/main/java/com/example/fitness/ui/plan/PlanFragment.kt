@@ -32,8 +32,8 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
     private var mCategories: List<Category> = listOf()
     private var mExercises: List<Exercise> = listOf()
     private var currentCalendar: Calendar = Calendar.getInstance()
-    override val viewModel: PlanViewModel
-            by viewModel()
+    private var mDate: String = LocalDate.now().toString()
+    override val viewModel: PlanViewModel by viewModel()
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -81,7 +81,9 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
 
     override fun setUpOnClick() {
         binding.btnAddExercise.setOnClickListener {
-            startActivity(Intent(requireContext(), AddCategoryActivity::class.java))
+            startActivity(Intent(requireContext(), AddCategoryActivity::class.java).apply {
+                putExtra("date", mDate)
+            })
         }
         binding.btnNextTime.setOnClickListener { nextWeek() }
         binding.btnBackTime.setOnClickListener { backWeek() }
@@ -248,6 +250,7 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
         } else {
             binding.btnAddExercise.hide()
         }
+        mDate = LocalDate.of(year, month, date).toString()
     }
 
     private fun onItemClickDelete(workoutPlan: WorkoutPlan) {
