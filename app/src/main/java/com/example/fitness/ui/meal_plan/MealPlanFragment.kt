@@ -2,6 +2,7 @@ package com.example.fitness.ui.meal_plan
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -28,7 +29,7 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
     private val adapterDayOfWeek = WeekMealPlanAdapter(::onItemClickWeek, getTodayIndex(getCurrentWeekDays()))
     private var adapter: NutritionMealPlanAdapter? = null
     private var currentCalendar: Calendar = Calendar.getInstance()
-    private var mNutrition: List<MyNutrition> = listOf()
+    private var mNutrition: MutableList<MyNutrition> = mutableListOf()
     private var mBreakFastList: List<MealItem> = listOf()
     private var mLunchList: List<MealItem> = listOf()
     private var mDinnerList: List<MealItem> = listOf()
@@ -204,8 +205,9 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
             mDinnerList = it
         }
         viewModel.myNutritionList.observe(viewLifecycleOwner) {
-            mNutrition = it
+            mNutrition = it.toMutableList()
             trySetupAdapter(compareList(mBreakFastList, mNutrition))
+
         }
         viewModel.mySportList.observe(viewLifecycleOwner) {
             mSports = it
@@ -214,6 +216,11 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
         viewModel.myMealList.observe(viewLifecycleOwner) {
             mMeals = it
             trySetupAdapter(compareList(mBreakFastList, mNutrition))
+        }
+        viewModel.delete.observe(viewLifecycleOwner){
+            if (it){
+               adapter?.submitList(mNutrition)
+            }
         }
     }
 
@@ -268,13 +275,15 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
             adapter = NutritionMealPlanAdapter(
                 mMeals = mMeals,
                 mSport = mSports,
-                onClick = ::onItemClickDelete
+                onClick = ::onItemClickDelete,
+                onData = ::onData
             )
             adapter?.let { binding.rcvFood.setAdapterLinearVertical(it) }
             adapter?.submitList(list)
         } else {
             if (list.isEmpty()) {
                 adapter?.let { binding.rcvFood.setAdapterLinearVertical(null) }
+                binding.textView42.text = getString(R.string.t_ng_kcal, "0")
             }
         }
 
@@ -283,6 +292,10 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
         }else {
             binding.tvCountFood.text = requireContext().getString(R.string.count_foods, list.size.toString())
         }
+    }
+
+    private fun onData(totalKcal : String) {
+        binding.textView42.text = getString(R.string.t_ng_kcal, totalKcal)
     }
 
     private fun setTabSelected(isNutritionSelected: Int) {
@@ -319,7 +332,8 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
     }
 
     private fun onItemClickDelete(myNutrition: MyNutrition) {
-//        viewModel.deleteNutrition(myNutrition)
+        myNutrition.id?.let { viewModel.delete(mDate, mealPlan, it) }
+        mNutrition.removeAll { it.id == myNutrition.id }
     }
 }
 

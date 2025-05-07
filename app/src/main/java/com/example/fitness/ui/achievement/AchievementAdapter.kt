@@ -67,7 +67,7 @@ class AchievementAdapter(
                 tvComplateSet.text = if (complete.isNotEmpty()) complete.size.toString() else "0"
                 tvSet.text = matchedWorkouts.size.toString()
 
-                if (complete.isNotEmpty()) {
+                if (complete.size == matchedWorkouts.size) {
                     binding.tvStatusAr.setTextColor(ContextCompat.getColor(root.context, R.color.light_green))
                     binding.tvStatusAr.text = "Hoàn thành"
                     binding.ivStatusAr.setImageResource(R.drawable.check_circle_green)

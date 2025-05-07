@@ -48,9 +48,13 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
         binding.ivBackExercise.setOnClickListener {
             resetAllCountTemp()
             resetAllSetTemp()
+            clearAllExercises()
             onBackPressedDispatcher.onBackPressed()
         }
         binding.tvCancel.setOnClickListener {
+            resetAllCountTemp()
+            resetAllSetTemp()
+            clearAllExercises()
             onBackPressedDispatcher.onBackPressed()
         }
         binding.tvAdd.setOnClickListener {addPlanExercise()}
@@ -121,5 +125,14 @@ class AddCategoryActivity : BaseActivity<ActivityAddCategoryBinding, AddExercise
             )
             viewModel.addWorkoutPlan(workoutPlan)
         }
+        clearAllExercises()
     }
+
+    private fun clearAllExercises() {
+        getSharedPreferences("EXERCISES", Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
+    }
+
 }

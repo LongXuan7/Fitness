@@ -1,6 +1,9 @@
 package com.example.fitness.util.base
 
 import com.example.fitness.data.model.MealItem
+import com.example.fitness.data.model.MealPlan
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.*
 
 abstract class BaseFirebaseRepository<T> {
@@ -74,9 +77,28 @@ abstract class BaseFirebaseRepository<T> {
             .addOnCompleteListener { task -> onComplete(task.isSuccessful) }
     }
 
-    fun addMealPlan(id: String, data: T, onComplete: (Boolean) -> Unit = {}) {
-        ref.child(id).setValue(data)
-            .addOnCompleteListener { task -> onComplete(task.isSuccessful) }
+    fun addMealPlan(date: String, mealPlan: MealPlan, onComplete: (Boolean) -> Unit = {}) {
+        val updates = mutableListOf<Task<Void>>()
+
+        mealPlan.breakfast?.let { breakfastItems ->
+            val task = ref.child(date).child("breakfast").updateChildren(breakfastItems)
+            updates.add(task)
+        }
+
+        mealPlan.lunch?.let { lunchItems ->
+            val task = ref.child(date).child("lunch").updateChildren(lunchItems)
+            updates.add(task)
+        }
+
+        mealPlan.dinner?.let { dinnerItems ->
+            val task = ref.child(date).child("dinner").updateChildren(dinnerItems)
+            updates.add(task)
+        }
+
+        Tasks.whenAllComplete(updates)
+            .addOnCompleteListener { task ->
+                onComplete(task.isSuccessful)
+            }
     }
 
     fun addBatch(dataMap: Map<String, T>, onComplete: (Boolean) -> Unit = {}) {
@@ -98,5 +120,13 @@ abstract class BaseFirebaseRepository<T> {
     fun delete(id: String, onComplete: (Boolean) -> Unit = {}) {
         ref.child(id).removeValue()
             .addOnCompleteListener { task -> onComplete(task.isSuccessful) }
+    }
+
+    fun deleteMealItem(date: String, mealType: String, nutritionId: String, onComplete: (Boolean) -> Unit = {}) {
+        ref.child(date).child(mealType).child(nutritionId)
+            .removeValue()
+            .addOnCompleteListener { task ->
+                onComplete(task.isSuccessful)
+            }
     }
 }

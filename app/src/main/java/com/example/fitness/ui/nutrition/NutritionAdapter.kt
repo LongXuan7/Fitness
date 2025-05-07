@@ -66,7 +66,7 @@ class NutritionAdapter(
         }
         if (isShow) binding.btnAdd.show() else binding.btnAdd.hide()
         binding.btnAdd.setOnClickListener {
-            if (binding.etGram.text.toString().isEmpty()) {
+            if (binding.etGram.text.toString().isEmpty() && meal != null) {
                 Toast.makeText(
                     binding.root.context,
                     binding.root.context.getString(R.string.vui_l_ng_nh_p_gram), Toast.LENGTH_SHORT
@@ -75,7 +75,7 @@ class NutritionAdapter(
                 onClickAdd.invoke(item, binding.etGram.text.toString())
             }
         }
-        binding.root.setOnClickListener { onClick.invoke(item) }
+        binding.tvDeleteNutrition.setOnClickListener { onClick.invoke(item) }
     }
 
     fun showAddButton(boolean: Boolean) {

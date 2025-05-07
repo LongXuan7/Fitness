@@ -1,5 +1,6 @@
 package com.example.fitness.ui.nutrition
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -81,7 +82,7 @@ class NutritionFragment : BaseFragment<FragmentNutritionBinding, NutritionViewMo
 
     private fun onItemClickAdd(myNutrition: MyNutrition, mGram: String) {
         date?.let { selectedDate ->
-            val mealItemMap = mapOf(myNutrition.id.toString() to MealItem(nutrition_id = myNutrition.id, gram = mGram.toInt()))
+            val mealItemMap = mapOf(myNutrition.id.toString() to MealItem(nutrition_id = myNutrition.id, gram = if (mGram == "") 0 else mGram.toInt()))
 
             val mealPlanObject = when (mealPlan) {
                 "breakfast" -> MealPlan(breakfast = mealItemMap)

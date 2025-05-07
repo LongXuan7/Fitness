@@ -25,6 +25,7 @@ import com.example.fitness.util.base.BaseActivity
 import com.example.fitness.util.ext.hide
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
+import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -85,16 +86,30 @@ class AddExerciseActivity : BaseActivity<ActivityAddExerciseBinding, AddExercise
 
         exerciseList.forEach {
             viewModel.updateCountTempExercise(it.id, it.set_temp)
-            Log.d("longnx", "onItemCount: ${it.set_temp}")
         }
 
+        val sharedPreferences = getSharedPreferences("EXERCISES", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val type = object : TypeToken<MutableList<Exercise>>() {}.type
 
+        val json = sharedPreferences.getString("exercise", null)
+        val oldList: MutableList<Exercise> = if (json != null) {
+            gson.fromJson(json, type)
+        } else {
+            mutableListOf()
+        }
 
-        getSharedPreferences("EXERCISES", Context.MODE_PRIVATE)
-            .edit()
-            .putString("exercise", Gson().toJson(exerciseList))
+        for (newItem in exerciseList) {
+            if (oldList.none { it.id == newItem.id }) {
+                oldList.add(newItem)
+            }
+        }
+
+        sharedPreferences.edit()
+            .putString("exercise", gson.toJson(oldList))
             .apply()
     }
+
 
     private fun onClickUpdate(exercise: Exercise) {
         viewModel.updateAllSetTemp(exercise.id)

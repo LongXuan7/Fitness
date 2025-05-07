@@ -115,4 +115,18 @@ class MealPlanViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
             }
         )
     }
+
+    private val _delete = MutableLiveData<Boolean>()
+    val delete: MutableLiveData<Boolean>
+        get() = _delete
+
+    fun delete(date: String, mealType: String, nutritionId: String) {
+        launchWithErrorHandling(
+            block = {
+                repository.deleteMealItem(date, mealType, nutritionId) {
+                    _delete.postValue(it)
+                }
+            }
+        )
+    }
 }

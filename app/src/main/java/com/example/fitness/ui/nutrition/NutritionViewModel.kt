@@ -108,7 +108,7 @@ class NutritionViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
     fun addMealPlan(mealPlan: MealPlan, date: String) {
         launchWithErrorHandling(
             block = {
-                mealPlanRepository.add(
+                mealPlanRepository.addMealPlan(
                     date,
                     mealPlan,
                     onComplete = {
@@ -117,7 +117,7 @@ class NutritionViewModel(sharedPref: SharedPreferences) : BaseViewModel() {
                         }
                     }
                 )
-                mealPlanRepositoryEn.add(
+                mealPlanRepositoryEn.addMealPlan(
                     date,
                     mealPlan,
                     onComplete = {

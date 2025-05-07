@@ -1,5 +1,6 @@
 package com.example.fitness.ui.meal_plan
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,7 +18,8 @@ import com.example.fitness.util.ext.show
 class NutritionMealPlanAdapter(
     private val mSport: List<Sport>,
     private val mMeals: List<Meal>,
-    private val onClick: (MyNutrition) -> Unit = {}
+    private val onClick: (MyNutrition) -> Unit = {},
+    private val onData: (String) -> Unit = {},
 ) : BaseAdapter<MyNutrition, LayoutItemFoodBinding>(DIFF_MEAL) {
 
     companion object {
@@ -58,8 +60,8 @@ class NutritionMealPlanAdapter(
             binding.tvProteinNutrition.hide()
             binding.imageView10.hide()
         }
-
-        binding.root.setOnClickListener { onClick.invoke(item) }
+        onData.invoke(calculateTotalKcal(currentList).toString())
+        binding.tvDeleteNutrition.setOnClickListener { onClick.invoke(item) }
     }
 
     private fun calculateKcal(data: String, gram: Int): Int? {
@@ -75,6 +77,13 @@ class NutritionMealPlanAdapter(
         } else {
             null
         }
+    }
+
+    private fun calculateTotalKcal(items: List<MyNutrition>): Int {
+        return items.mapNotNull { item ->
+            val meal = mMeals.find { it.id == item.meal_id }
+            meal?.calo?.let { calo -> calculateKcal(calo, item.gram ?: 1) }
+        }.sum()
     }
 
 }

@@ -54,8 +54,8 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
         setUpRecyclerView()
     }
 
-    private fun setUpCalo() {
-        val totalBurnedCalories = workoutPlans.sumOf { workoutPlan ->
+    private fun setUpCalo(list : List<WorkoutPlan>) {
+        val totalBurnedCalories = list.sumOf { workoutPlan ->
             val exercise = mExercises.find { it.id == workoutPlan.exercise_id }
             val totalCalories = (exercise?.calories?.toInt() ?: 0) * (workoutPlan.set ?: 1)
             (totalCalories * (workoutPlan.progress ?: 0)) / 100
@@ -222,7 +222,7 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
                 R.string.count_exercise,
                 workoutPlans.filter { it.time == LocalDate.now().toString() }.size.toString()
             )
-            setUpCalo()
+            setUpCalo(workoutPlans.filter { it.time == LocalDate.now().toString() })
         }
     }
 
@@ -243,9 +243,11 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
         val date = week.date.toInt()
         val month = binding.tvMonth.text.toString().replace("Tháng ", "").toInt()
         val year = binding.tvYear.text.toString().toInt()
-        adapterPlan?.submitList(workoutPlans.filter {
+        val list = workoutPlans.filter {
             it.time == LocalDate.of(year, month, date).toString()
-        })
+        }
+        adapterPlan?.submitList(list)
+        setUpCalo(list)
         binding.tvCountExercise.text = getString(
             R.string.count_exercise,
             workoutPlans.filter {
@@ -283,5 +285,20 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
             mCategories.find { it.id == mExercises.find { it.id == workoutPlan.exercise_id }!!.category_id })
         intent.putExtra("workoutPlan", workoutPlan)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val list = workoutPlans.filter {
+            it.time == mDate
+        }
+        adapterPlan?.submitList(list)
+        setUpCalo(list)
+        binding.tvCountExercise.text = getString(
+            R.string.count_exercise,
+            workoutPlans.filter {
+                it.time == mDate
+            }.size.toString()
+        )
     }
 }
