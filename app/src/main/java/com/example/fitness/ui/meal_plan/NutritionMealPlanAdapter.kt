@@ -44,7 +44,7 @@ class NutritionMealPlanAdapter(
         if (meal != null) {
             binding.ivNutrition.loadImage(meal.image)
             binding.tvTitleNutrition.text = meal.title
-            binding.tvKcalNutrition.text = meal.calo
+            binding.tvKcalNutrition.text = meal.calo?.let { calculateKcal(it, item.gram ?: 1).toString() + " kcal" }
             binding.tvProteinNutrition.text = binding.root.context.getString(R.string.protein, meal.protein)
             binding.imageView9.show()
             binding.tvKcalNutrition.show()
@@ -61,4 +61,20 @@ class NutritionMealPlanAdapter(
 
         binding.root.setOnClickListener { onClick.invoke(item) }
     }
+
+    private fun calculateKcal(data: String, gram: Int): Int? {
+        val regex = Regex("(\\d+)\\s*kcal\\s*/\\s*(\\d+)\\s*gram")
+        val match = regex.find(data)
+
+        return if (match != null) {
+            val kcalPer100g = match.groupValues[1].toDouble()
+            val baseGram = match.groupValues[2].toDouble()
+
+            val result = (kcalPer100g / baseGram) * gram
+            result.toInt()
+        } else {
+            null
+        }
+    }
+
 }

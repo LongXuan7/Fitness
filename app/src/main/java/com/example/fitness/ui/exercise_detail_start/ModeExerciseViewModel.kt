@@ -33,4 +33,28 @@ class ModeExerciseViewModel : BaseViewModel() {
            }
        )
     }
+
+    private val _updateTimePasses = MutableLiveData(false)
+    val updateTimePasses: LiveData<Boolean> get() = _updateTimePasses
+
+    fun updateTimePasses(id: String, timePasses: Int) {
+        launchWithErrorHandling(
+            block = {
+                workoutPlanRepository.update(
+                    id,
+                    updates = mapOf("time_passes" to timePasses),
+                    onComplete = {
+                        _updateTimePasses.postValue(true)
+                    },
+                )
+                workoutPlanRepositoryEn.update(
+                    id,
+                    updates = mapOf("time_passes" to timePasses),
+                    onComplete = {
+                        _updateTimePasses.postValue(true)
+                    },
+                )
+            }
+        )
+    }
 }

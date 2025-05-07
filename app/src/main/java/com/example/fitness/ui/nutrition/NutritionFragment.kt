@@ -79,9 +79,9 @@ class NutritionFragment : BaseFragment<FragmentNutritionBinding, NutritionViewMo
         }
     }
 
-    private fun onItemClickAdd(myNutrition: MyNutrition) {
+    private fun onItemClickAdd(myNutrition: MyNutrition, mGram: String) {
         date?.let { selectedDate ->
-            val mealItemMap = mapOf(myNutrition.id.toString() to MealItem(nutrition_id = myNutrition.id))
+            val mealItemMap = mapOf(myNutrition.id.toString() to MealItem(nutrition_id = myNutrition.id, gram = mGram.toInt()))
 
             val mealPlanObject = when (mealPlan) {
                 "breakfast" -> MealPlan(breakfast = mealItemMap)
@@ -98,7 +98,6 @@ class NutritionFragment : BaseFragment<FragmentNutritionBinding, NutritionViewMo
             }
         }
     }
-
 
     private fun onItemClickDelete(nutrition: MyNutrition) {
         viewModel.deleteNutrition(nutrition)

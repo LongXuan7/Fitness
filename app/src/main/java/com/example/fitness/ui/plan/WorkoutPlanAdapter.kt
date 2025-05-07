@@ -47,6 +47,7 @@ class WorkoutPlanAdapter(
         binding.tvCategoryExercisePlan.text = category?.name
         binding.tvSetExercisePlan.text = binding.root.context.getString(R.string.sets, item.set.toString())
         binding.seekBar.progress = item.progress ?: 0
+        binding.seekBar.isEnabled = false
 
         val itemDate = LocalDate.parse(item.time)
         val currentDate = LocalDate.now()

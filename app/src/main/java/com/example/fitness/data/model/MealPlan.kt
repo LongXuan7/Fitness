@@ -7,5 +7,6 @@ data class MealPlan(
 )
 
 data class MealItem(
-    var nutrition_id: String? = null
+    var nutrition_id: String? = null,
+    var gram : Int? = null
 )

@@ -3,6 +3,7 @@ package com.example.fitness.ui.plan
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -51,6 +52,15 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
         binding.tvMonth.text = "Tháng ${LocalDate.now().monthValue}"
         binding.tvYear.text = LocalDate.now().year.toString()
         setUpRecyclerView()
+    }
+
+    private fun setUpCalo() {
+        val totalBurnedCalories = workoutPlans.sumOf { workoutPlan ->
+            val exercise = mExercises.find { it.id == workoutPlan.exercise_id }
+            val totalCalories = (exercise?.calories?.toInt() ?: 0) * (workoutPlan.set ?: 1)
+            (totalCalories * (workoutPlan.progress ?: 0)) / 100
+        }
+        binding.tvCaloriesBurned.text = totalBurnedCalories.toString()
     }
 
     override fun setupObservers() {
@@ -212,6 +222,7 @@ class PlanFragment : BaseFragment<FragmentPlanBinding, PlanViewModel>() {
                 R.string.count_exercise,
                 workoutPlans.filter { it.time == LocalDate.now().toString() }.size.toString()
             )
+            setUpCalo()
         }
     }
 

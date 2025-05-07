@@ -67,14 +67,17 @@ class SportDetailActivity : BaseActivity<ActivitySportDetailBinding, SportDetail
 
     override fun setupOnClick() {
         binding.ivBackSportDetail.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
-        binding.tvAddSportPlan.setOnClickListener { viewModel.addMyNutrition(
-            MyNutrition(
-            id = UUID.randomUUID().toString(),
-            meal_id = "",
-            sport_id = sport?.id.toString(),
-            user_id = FirebaseAuth.getInstance().currentUser?.uid.toString(),
-        )
-        ) }
+        binding.tvAddSportPlan.setOnClickListener {
+            viewModel.addMyNutrition(
+                MyNutrition(
+                    id = UUID.randomUUID().toString(),
+                    meal_id = "",
+                    sport_id = sport?.id.toString(),
+                    user_id = FirebaseAuth.getInstance().currentUser?.uid.toString(),
+                    1
+                )
+            )
+        }
     }
 
     override fun setupObservers() {

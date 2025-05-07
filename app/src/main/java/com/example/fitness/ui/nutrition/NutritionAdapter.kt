@@ -2,6 +2,7 @@ package com.example.fitness.ui.nutrition
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import com.example.fitness.R
 import com.example.fitness.data.model.Meal
@@ -16,7 +17,7 @@ import com.example.fitness.util.ext.show
 class NutritionAdapter(
     private val mSport: List<Sport>,
     private val mMeals: List<Meal>,
-    private val onClickAdd: (MyNutrition) -> Unit = {},
+    private val onClickAdd: (MyNutrition, String) -> Unit,
     private val onClick: (MyNutrition) -> Unit = {}
 ) : BaseAdapter<MyNutrition, LayoutItemNutritionBinding>(DIFF_MEAL) {
 
@@ -53,6 +54,7 @@ class NutritionAdapter(
             binding.tvKcalNutrition.show()
             binding.tvProteinNutrition.show()
             binding.imageView10.show()
+            if (isShow) binding.etGram.show() else binding.etGram.hide()
         } else {
             binding.ivNutrition.loadImage(sport?.image)
             binding.tvTitleNutrition.text = sport?.title
@@ -60,9 +62,19 @@ class NutritionAdapter(
             binding.tvKcalNutrition.hide()
             binding.tvProteinNutrition.hide()
             binding.imageView10.hide()
+            binding.etGram.hide()
         }
         if (isShow) binding.btnAdd.show() else binding.btnAdd.hide()
-        binding.btnAdd.setOnClickListener { onClickAdd.invoke(item) }
+        binding.btnAdd.setOnClickListener {
+            if (binding.etGram.text.toString().isEmpty()) {
+                Toast.makeText(
+                    binding.root.context,
+                    binding.root.context.getString(R.string.vui_l_ng_nh_p_gram), Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                onClickAdd.invoke(item, binding.etGram.text.toString())
+            }
+        }
         binding.root.setOnClickListener { onClick.invoke(item) }
     }
 

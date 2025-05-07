@@ -221,8 +221,12 @@ class MealPlanFragment : BaseFragment<FragmentMealPlanBinding, MealPlanViewModel
         list1: List<MealItem>,
         list2: List<MyNutrition>
     ): List<MyNutrition> {
-        val nutritionIds = list1.map { it.nutrition_id }.toSet()
-        return list2.filter { it.id in nutritionIds }
+        val mealMap = list1.associateBy { it.nutrition_id }
+        return list2.mapNotNull { nutrition ->
+            mealMap[nutrition.id]?.let { matchedMeal ->
+                nutrition.copy(gram = matchedMeal.gram)
+            }
+        }
     }
 
     override fun setUpOnClick() {

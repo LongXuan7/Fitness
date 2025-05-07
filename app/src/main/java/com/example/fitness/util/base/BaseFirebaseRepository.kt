@@ -74,6 +74,11 @@ abstract class BaseFirebaseRepository<T> {
             .addOnCompleteListener { task -> onComplete(task.isSuccessful) }
     }
 
+    fun addMealPlan(id: String, data: T, onComplete: (Boolean) -> Unit = {}) {
+        ref.child(id).setValue(data)
+            .addOnCompleteListener { task -> onComplete(task.isSuccessful) }
+    }
+
     fun addBatch(dataMap: Map<String, T>, onComplete: (Boolean) -> Unit = {}) {
         val updates = dataMap.mapValues { it.value }
         ref.updateChildren(updates.mapValues { it.value as Any })

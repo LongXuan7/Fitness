@@ -43,8 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/b_i_t_p"
         android:fontFamily="@font/montserrat_bold"
+        android:text="@string/b_i_t_p"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/linearLayout6"
@@ -115,5 +115,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout6"
         app:srcCompat="@drawable/next" />
+
+    <TextView
+        android:id="@+id/tv_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="0%"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_count_exercise_ar"
+        app:layout_constraintStart_toEndOf="@+id/tv_set"
+        app:layout_constraintTop_toTopOf="@+id/tv_count_exercise_ar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

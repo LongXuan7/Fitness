@@ -56,7 +56,8 @@ class MealDetailActivity : BaseActivity<ActivityMealDetailBinding, MealDetailVie
             id = UUID.randomUUID().toString(),
             meal_id = meal?.id.toString(),
             sport_id = "",
-            user_id = FirebaseAuth.getInstance().currentUser?.uid.toString()
+            user_id = FirebaseAuth.getInstance().currentUser?.uid.toString(),
+            1
         )) }
     }
 

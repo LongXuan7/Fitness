@@ -22,6 +22,9 @@ import com.example.fitness.util.ext.setAdapterGrid
 import com.example.fitness.util.ext.setAdapterLinearVertical
 import com.example.fitness.util.ext.show
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.app.Activity
+import androidx.activity.result.contract.ActivityResultContracts
+
 
 class ExerciseDetailStartActivity :
     BaseActivity<ActivityExerciseDetailStartBinding, ExerciseDetailViewModel>() {
@@ -110,11 +113,12 @@ class ExerciseDetailStartActivity :
         binding.ivBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         binding.tvStart.setOnClickListener {
             exercise?.let {
-                startActivity(Intent(this, ModeExerciseActivity::class.java).apply {
+                val intent = Intent(this, ModeExerciseActivity::class.java).apply {
                     putExtra("exercise", it)
                     putExtra("title", title)
                     putExtra("workoutPlan", workoutPlan)
-                })
+                }
+                activityResultLauncher.launch(intent)
             }
         }
     }
@@ -122,4 +126,14 @@ class ExerciseDetailStartActivity :
     override fun setupObservers() {
 
     }
+
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val timePasses = result.data?.getIntExtra("time_passes", 0) ?: 0
+            workoutPlan?.time_passes = timePasses
+        }
+    }
+
 }

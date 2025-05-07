@@ -1,6 +1,8 @@
 package com.example.fitness.ui.mode_exercise
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -31,8 +33,10 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
     private var timeLeftInSeconds = 0
     private var exercise: Exercise? = null
     private var workoutPlan: WorkoutPlan? = null
-    override val viewModel: ModeExerciseViewModel
-            by viewModel()
+    override val viewModel: ModeExerciseViewModel by viewModel()
+    private var totalTime: Int = 0
+    private var remainingSeconds: Int = 0
+    private var timePasses: Int = 0
 
     override val bindingInflater: (LayoutInflater) -> ActivityModeExerciseBinding
         get() = ActivityModeExerciseBinding::inflate
@@ -52,10 +56,13 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
             intent.getSerializableExtra("workoutPlan") as? WorkoutPlan
         }
 
+        timePasses = workoutPlan?.time_passes ?: 0
+        totalTime = (exercise?.time?.toInt() ?: 0) * (workoutPlan?.set ?: 1)
+        remainingSeconds = (totalTime - timePasses)
+        binding.textView10.text = formatTime(remainingSeconds)
+
         startVideo(exercise?.video_url)
-        timeLeftInSeconds = exercise?.time?.toInt() ?: 0
-        binding.textView10.text = formatTime(timeLeftInSeconds)
-        startCountdown(timeLeftInSeconds)
+        startCountdown(remainingSeconds)
     }
 
     private fun startVideo(videoUrl: String?) {
@@ -77,14 +84,20 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
         binding.tvStop.setOnClickListener {
             when {
                 isFinished -> {
-                    onBackPressedDispatcher.onBackPressed()
+                    val resultIntent = Intent().apply {
+                        putExtra("time_passes", timePasses)
+                    }
+                    setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
                 }
+
                 isPaused -> {
                     isPaused = false
                     updateStopButtonState()
-                    startCountdown(timeLeftInSeconds)
+                    startCountdown(remainingSeconds)
                     binding.videoView.start()
                 }
+
                 else -> {
                     isPaused = true
                     countDownTimer?.cancel()
@@ -93,7 +106,13 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
                 }
             }
         }
-        binding.ivBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        binding.ivBack.setOnClickListener {
+            val resultIntent = Intent().apply {
+                putExtra("time_passes", timePasses)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
     override fun setupObservers() {}
@@ -102,26 +121,21 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
         countDownTimer?.cancel()
         countDownTimer = object : CountDownTimer(seconds * 1000L, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
-                timeLeftInSeconds = (millisUntilFinished / 1000).toInt()
-                binding.textView10.text = formatTime(timeLeftInSeconds)
+                remainingSeconds = (millisUntilFinished / 1000).toInt()
 
-                val totalSet = workoutPlan?.set ?: 0
-                val eachSetTime = exercise?.time?.toIntOrNull() ?: 0
-                val elapsedTimeThisSet = eachSetTime - timeLeftInSeconds
-                val completedSetBefore = workoutPlan?.progress!!
+                timePasses = totalTime - remainingSeconds
+                workoutPlan?.time_passes = timePasses
+                val progress = ((timePasses * 100) / totalTime).coerceIn(0, 100)
 
-                val progressPercent = calculateProgressPercent(
-                    totalSet,
-                    eachSetTime,
-                    elapsedTimeThisSet,
-                    completedSetBefore
-                )
-                workoutPlan?.id?.let { viewModel.updateProgress(it,progressPercent) }
+                binding.textView10.text = formatTime(remainingSeconds)
+                workoutPlan?.id?.let { viewModel.updateProgress(it, progress) }
+                workoutPlan?.id?.let { viewModel.updateTimePasses(it, timePasses) }
             }
 
             override fun onFinish() {
                 isFinished = true
                 binding.textView10.text = formatTime(0)
+                workoutPlan?.id?.let { viewModel.updateProgress(it, 100) }
                 binding.videoView.pause()
                 updateStopButtonState()
             }
@@ -135,10 +149,12 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
                 binding.tvStop.setBackgroundResource(R.drawable.bg_done)
                 binding.tvStop.text = "Hoàn thành"
             }
+
             isPaused -> {
                 binding.tvStop.setBackgroundResource(R.drawable.bg_resume)
                 binding.tvStop.text = "Tiếp tục"
             }
+
             else -> {
                 binding.tvStop.setBackgroundResource(R.drawable.bg_stop)
                 binding.tvStop.text = "Dừng"
@@ -146,15 +162,13 @@ class ModeExerciseActivity : BaseActivity<ActivityModeExerciseBinding, ModeExerc
         }
     }
 
-    fun calculateProgressPercent(
-        totalSet: Int,
-        eachSetTime: Int,
-        elapsedTimeThisSet: Int,
-        completedSetBefore: Int = 0
-    ): Int {
-        val totalTime = totalSet * eachSetTime
-        val totalElapsed = completedSetBefore * eachSetTime + elapsedTimeThisSet
-        return if (totalTime > 0) (totalElapsed * 100) / totalTime else 0
+    override fun onPause() {
+        super.onPause()
+        countDownTimer?.cancel()
+        val elapsed = totalTime - remainingSeconds
+        workoutPlan?.time_passes = elapsed
+        val currentProgress = ((elapsed * 100) / totalTime).coerceIn(0, 100)
+        workoutPlan?.id?.let { viewModel.updateProgress(it, currentProgress) }
     }
 
     override fun onDestroy() {

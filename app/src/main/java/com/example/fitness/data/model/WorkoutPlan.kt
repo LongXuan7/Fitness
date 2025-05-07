@@ -10,4 +10,5 @@ data class WorkoutPlan (
     val set : Int? = null,
     val completedSet: Int? = null,
     val progress: Int? = null,
+    var time_passes: Int? = null
 ) : Serializable
