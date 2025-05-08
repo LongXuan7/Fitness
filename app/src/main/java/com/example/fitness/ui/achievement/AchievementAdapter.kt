@@ -24,7 +24,7 @@ class AchievementAdapter(
     companion object {
         val DIFF_WEEK = object : DiffUtil.ItemCallback<Week>() {
             override fun areItemsTheSame(oldItem: Week, newItem: Week): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.date == newItem.date
             }
 
             override fun areContentsTheSame(oldItem: Week, newItem: Week): Boolean {
@@ -61,7 +61,8 @@ class AchievementAdapter(
                 }
             }
 
-
+            Log.d("longnx", "bind: $matchedWorkouts")
+            Log.d("longnx", "-------")
             if (matchedWorkouts.isNotEmpty()) {
                 val complete = matchedWorkouts.filter { it.progress == 100 }
                 tvComplateSet.text = if (complete.isNotEmpty()) complete.size.toString() else "0"
@@ -86,6 +87,14 @@ class AchievementAdapter(
                 val progressSum = matchedWorkouts.sumOf { it.progress ?: 0 }
                 binding.tvPercent.text = "${progressSum / matchedWorkouts.size}%"
 
+            } else {
+                tvComplateSet.text = "0"
+                tvSet.text = "0"
+                tvPercent.text = "0%"
+                tvStatusAr.setTextColor(ContextCompat.getColor(root.context, R.color.red))
+                tvStatusAr.text = "Không có bài tập"
+                ivStatusAr.setImageResource(R.drawable.error)
+                linearLayout6.setBackgroundResource(R.drawable.bg_calander_light_black)
             }
 
             btnNextAr.setOnClickListener {
